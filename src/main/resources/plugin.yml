@@ -1,0 +1,9 @@
+name: Dashify
+main: io.dashify.plugin.DashifyPluginMain
+version: $version
+api-version: '1.19'
+
+authors: [ pybsh ]
+
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
