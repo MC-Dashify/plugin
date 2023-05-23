@@ -1,9 +1,10 @@
 name: Dashify
 main: io.dashify.plugin.DashifyPluginMain
-version: $version
+version: 0.0.1
 api-version: '1.19'
 
-authors: [ pybsh ]
+authors: [ pybsh , aroxu ]
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
+  - org.mindrot:jbcrypt:0.4
