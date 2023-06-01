@@ -9,7 +9,16 @@ class DashifyPluginMain : JavaPlugin() {
 
     override fun onEnable() {
         plugin = this
-        saveDefaultConfig()
+
+        ConfigHandler.initConfig()
+        getCommand("dashify")?.setExecutor(DashifyCommand())
+        getCommand("dashify")?.tabCompleter = DashifyCommandTabComplete()
+
+        server.scheduler.runTaskAsynchronously(this, DashifyScheduler.Ktor)
         logger.info("dashify-plugin Enabled.")
+    }
+
+    override fun onDisable() {
+        server.scheduler.cancelTasks(this)
     }
 }
