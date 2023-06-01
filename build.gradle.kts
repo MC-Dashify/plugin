@@ -8,7 +8,7 @@ plugins {
 
 group = "io.dashify.plugin"
 version = "1.0-SNAPSHOT"
-
+val ktor_version = "2.3.1"
 repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
@@ -21,8 +21,8 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8:1.8.21"))
     compileOnly("org.mindrot:jbcrypt:0.4")
 
-    compileOnly("io.ktor:ktor-server-core:2.3.0")
-    compileOnly("io.ktor:ktor-server-jetty:2.3.0")
+    compileOnly("io.ktor:ktor-server-core:$ktor_version")
+    compileOnly("io.ktor:ktor-server-jetty:$ktor_version")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 

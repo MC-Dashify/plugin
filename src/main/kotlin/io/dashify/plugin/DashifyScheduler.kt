@@ -17,27 +17,51 @@ object DashifyScheduler {
 fun Application.ktor() {
     routing {
         get("/") {
-            if( ConfigHandler["toggle"] == "disable" ) { call.response.status(HttpStatusCode(418, "I'm a tea pot")) }
-            else call.response.status(HttpStatusCode.OK)
+            if( ConfigHandler["toggle"] == "disable" ) {
+                call.response.status(HttpStatusCode(418, "I'm a tea pot"))
+                return@get
+            }
+            call.response.status(HttpStatusCode.OK)
         }
         get("/worlds"){
-            if( ConfigHandler["toggle"] == "disable" ) { call.response.status(HttpStatusCode(418, "I'm a tea pot")) }
+            if( ConfigHandler["toggle"] == "disable" ) {
+                call.response.status(HttpStatusCode(418, "I'm a tea pot"))
+                return@get
+            }
             call.respond(WorldInfoProvider.getWorldsList().toString())
         }
-        get("/worlds/{uuid}"){
-            if( ConfigHandler["toggle"] == "disable" ) { call.response.status(HttpStatusCode(418, "I'm a tea pot")) }
+        get("/worlds/{uuid}") {
+            if (ConfigHandler["toggle"] == "disable") {
+                call.response.status(HttpStatusCode(418, "I'm a tea pot"))
+                return@get
+            }
             plugin.server.worlds.forEach {
-                if (call.parameters["uuid"] == it.uid.toString()){
+                if (call.parameters["uuid"] == it.uid.toString()) {
                     call.respond(WorldInfoProvider.getWorldInfo(it.uid.toString()).toString())
-                }
-                else {
+                } else {
                     call.response.status(HttpStatusCode.BadRequest)
                 }
             }
         }
-        get("/players"){
-            if( ConfigHandler["toggle"] == "disable" ) { call.response.status(HttpStatusCode(418, "I'm a tea pot")) }
+        get("/players") {
+            if( ConfigHandler["toggle"] == "disable" ) {
+                call.response.status(HttpStatusCode(418, "I'm a tea pot"))
+                return@get
+            }
             call.respond(PlayerInfoProvider.getPlayerList().toString())
+        }
+        get("/players/{uuid}") {
+            if( ConfigHandler["toggle"] == "disable" ) {
+                call.response.status(HttpStatusCode(418, "I'm a tea pot"))
+                return@get
+            }
+            plugin.server.onlinePlayers.forEach {
+                if (call.parameters["uuid"] == it.uniqueId.toString()) {
+                    call.respond("")
+                } else {
+                    call.response.status(HttpStatusCode.BadRequest)
+                }
+            }
         }
     }
 }
