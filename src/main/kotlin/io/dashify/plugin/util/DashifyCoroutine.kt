@@ -1,0 +1,17 @@
+package io.dashify.plugin.util
+
+import io.dashify.plugin.DashifyPluginMain
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+
+object DashifyCoroutine {
+    suspend fun await(runnable: Runnable) {
+        suspendCoroutine { continuation: Continuation<Boolean> ->
+            DashifyPluginMain.plugin.server.scheduler.scheduleSyncDelayedTask(DashifyPluginMain.plugin) {
+                runnable.run()
+                continuation.resume(true)
+            }
+        }
+    }
+}
