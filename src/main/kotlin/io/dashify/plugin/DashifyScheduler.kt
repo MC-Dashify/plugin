@@ -8,13 +8,44 @@ import io.ktor.server.jetty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-object DashifyScheduler {
-    var Ktor = Runnable {
-        embeddedServer(Jetty, port = 8080, module = Application::ktor).start(wait=true)
+private var isServerRunning: Boolean = false
+private val server = embeddedServer(Jetty,
+    environment = applicationEngineEnvironment {
+        module {
+            dashify()
+        }
+        connector {
+            port = 8080
+            host = "0.0.0.0"
+        }
+        classLoader = (DashifyPluginMain)::class.java.classLoader
     }
+)
+
+fun startKtor() {
+    if (isServerRunning) return
+    Thread {
+        server.start(wait = true)
+    }.start()
+    isServerRunning = true
 }
 
-fun Application.ktor() {
+fun stopKtor() {
+    if (!isServerRunning) return
+    server.stop(20, 20)
+    isServerRunning = false
+}
+
+fun restart() {
+    stopKtor()
+    startKtor()
+}
+
+fun checkIsKtorServerRunning(): Boolean {
+    return isServerRunning
+}
+
+fun Application.dashify() {
     routing {
         get("/") {
             if( ConfigHandler["toggle"] == "disable" ) {
@@ -65,4 +96,3 @@ fun Application.ktor() {
         }
     }
 }
-

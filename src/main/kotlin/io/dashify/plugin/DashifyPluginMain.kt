@@ -14,7 +14,7 @@ class DashifyPluginMain : JavaPlugin() {
         getCommand("dashify")?.setExecutor(DashifyCommand())
         getCommand("dashify")?.tabCompleter = DashifyCommandTabComplete()
 
-        server.scheduler.runTaskAsynchronously(this, DashifyScheduler.Ktor)
+        startKtor()
         logger.info("dashify-plugin Enabled.")
     }
 
