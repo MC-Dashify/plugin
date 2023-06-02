@@ -1,9 +1,12 @@
 package io.dashify.plugin
 
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
+import io.dashify.plugin.util.DashifyCoroutine.await
+import io.dashify.plugin.util.FileUtil.getFolderSize
 import kotlinx.serialization.json.*
 import org.bukkit.GameRule
 import java.util.*
+import kotlin.collections.HashMap
 
 object WorldInfoProvider {
     fun getWorldsList(): JsonObject {
@@ -13,23 +16,29 @@ object WorldInfoProvider {
         return JsonObject(mapOf("worlds" to Json.encodeToJsonElement(worlds)))
     }
 
-    fun getWorldInfo(worldUid: String): JsonObject{
-        val world = plugin.server.getWorld(UUID.fromString(worldUid))
+    suspend fun getWorldInfo(worldUid: String): HashMap<String, Any> {
+        val result = HashMap<String, Any>()
+        runCatching {
+            val world = plugin.server.getWorld(UUID.fromString(worldUid))!!
 
-        val gamerule = mutableMapOf<String, JsonElement>()
-        world!!.gameRules.forEach { g -> gamerule[g] = JsonPrimitive(world.getGameRuleValue(GameRule.getByName(g)!!).toString()) }
-
-        val worldInfo = mapOf(
-            "name" to JsonPrimitive(world.name),
-            "loadedChunks" to JsonPrimitive(world.loadedChunks.size),
-            // "entities" to JsonPrimitive(world.entities.size), // TODO: java.lang.IllegalStateException: Asynchronous Chunk getEntities call!
-            "player" to JsonPrimitive(world.players.size),
-            "gamerule" to Json.encodeToJsonElement(gamerule),
-            "difficulty" to JsonPrimitive(world.difficulty.name),
-            "size" to JsonPrimitive(world.worldFolder.length())
-        )
-
-        return JsonObject(worldInfo)
-   }
-
+            var entities: Int
+            await {
+                entities = world.entities.size
+                result["name"] = world.name
+                result["loadedChunks"] = world.loadedChunks.size
+                result["entities"] = entities
+                result["player"] = world.players.size
+                result["gamerule"] = world.gameRules.mapNotNull { ruleName ->
+                    GameRule.getByName(ruleName)?.let { rule ->
+                        Pair(ruleName, world.getGameRuleValue(rule))
+                    }
+                }.toMap()
+                result["difficulty"] = world.difficulty.name
+                result["size"] = getFolderSize(world.worldFolder)
+            }
+        }.onFailure {
+            result["error"] = it.stackTraceToString()
+        }
+        return result
+    }
 }

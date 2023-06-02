@@ -18,22 +18,22 @@ class DashifyCommand : CommandExecutor {
         }
 
         if ( args[0] == "enable" ) {
-            if ( ConfigHandler["toggle"] == "enable" ) { 
+            if ( ConfigHandler["enabled"].toString().toBoolean() ) {
                 sender.sendMessage("dashify-plugin is already enabled.")
                 return false
             }
             
-            ConfigHandler["toggle"] = "enable"
+            ConfigHandler["enabled"] = true
             sender.sendMessage("dashify-plugin enabled.")
         }
 
         if ( args[0] == "disable" ) {
-            if ( ConfigHandler["toggle"] == "disable" ) { 
+            if ( !ConfigHandler["enabled"].toString().toBoolean() ) {
                 sender.sendMessage("dashify-plugin is already disabled.")
                 return false
             }
             
-            ConfigHandler["toggle"] = "disable"
+            ConfigHandler["enabled"] = false
             sender.sendMessage("dashify-plugin disabled.")
         }
         return true
@@ -45,5 +45,4 @@ class DashifyCommandTabComplete : TabCompleter {
         if (args.size == 1) return arrayListOf("key","enable","disable")
         return Collections.emptyList()
     }
-
 }

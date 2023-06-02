@@ -1,14 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "1.8.21"
-    id("com.github.johnrengelman.shadow") version("7.1.1")
+    id("com.github.johnrengelman.shadow") version ("7.1.1")
     kotlin("plugin.serialization") version "1.8.21"
 }
 
 group = "io.dashify.plugin"
 version = "1.0-SNAPSHOT"
-val ktor_version = "2.3.1"
+val ktorVersion = "2.3.1"
 repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
@@ -21,8 +19,12 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8:1.8.21"))
     compileOnly("org.mindrot:jbcrypt:0.4")
 
-    compileOnly("io.ktor:ktor-server-core:$ktor_version")
-    compileOnly("io.ktor:ktor-server-jetty:$ktor_version")
+    compileOnly("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    compileOnly("io.ktor:ktor-server-cors-jvm:2.3.1")
+    compileOnly("io.ktor:ktor-server-jetty-jvm:$ktorVersion")
+    compileOnly("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    compileOnly("io.ktor:ktor-serialization-jackson:$ktorVersion")
+
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 
