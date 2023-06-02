@@ -3,17 +3,15 @@ package io.dashify.plugin
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
 import io.dashify.plugin.util.DashifyCoroutine.await
 import io.dashify.plugin.util.FileUtil.getFolderSize
-import kotlinx.serialization.json.*
 import org.bukkit.GameRule
 import java.util.*
-import kotlin.collections.HashMap
 
 object WorldInfoProvider {
-    fun getWorldsList(): JsonObject {
+    fun getWorldsList(): HashMap<String, Any> {
         val worlds = arrayListOf<String>()
         plugin.server.worlds.forEach { worlds.add(it.uid.toString()) }
 
-        return JsonObject(mapOf("worlds" to Json.encodeToJsonElement(worlds)))
+        return hashMapOf("worlds" to worlds)
     }
 
     suspend fun getWorldInfo(worldUid: String): HashMap<String, Any> {

@@ -39,7 +39,7 @@ fun Application.dashify() {
         get("/worlds") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
 
-            call.respond(WorldInfoProvider.getWorldsList().toString())
+            call.respond(WorldInfoProvider.getWorldsList())
         }
         get("/worlds/{uuid}") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
@@ -64,13 +64,13 @@ fun Application.dashify() {
         get("/players") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
 
-            call.respond(PlayerInfoProvider.getPlayerList().toString())
+            call.respond(PlayerInfoProvider.getPlayerList())
         }
         get("/players/{uuid}") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
             DashifyPluginMain.plugin.server.onlinePlayers.forEach {
                 if (call.parameters["uuid"] == it.uniqueId.toString()) {
-                    call.respond(PlayerInfoProvider.getPlayerInfo(it.uniqueId.toString()).toString())
+                    call.respond(PlayerInfoProvider.getPlayerInfo(it.uniqueId.toString()))
                 } else {
                     call.response.status(HttpStatusCode.BadRequest)
                 }
