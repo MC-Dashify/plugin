@@ -19,6 +19,6 @@ class DashifyPluginMain : JavaPlugin() {
     }
 
     override fun onDisable() {
-        server.scheduler.cancelTasks(this)
+        stopKtor()
     }
 }

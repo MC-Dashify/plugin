@@ -88,7 +88,7 @@ fun Application.dashify() {
             }
             plugin.server.onlinePlayers.forEach {
                 if (call.parameters["uuid"] == it.uniqueId.toString()) {
-                    call.respond("")
+                    call.respond(PlayerInfoProvider.getPlayerInfo(it.uniqueId.toString()).toString())
                 } else {
                     call.response.status(HttpStatusCode.BadRequest)
                 }

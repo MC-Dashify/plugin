@@ -12,6 +12,6 @@ commands:
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
   - org.mindrot:jbcrypt:0.4
-  - io.ktor:ktor-server-core-jvm:2.3.0
-  - io.ktor:ktor-server-jetty-jvm:2.3.0
+  - io.ktor:ktor-server-core-jvm:2.3.1
+  - io.ktor:ktor-server-jetty-jvm:2.3.1
   - org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0

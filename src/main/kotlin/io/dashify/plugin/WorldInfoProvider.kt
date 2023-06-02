@@ -20,13 +20,13 @@ object WorldInfoProvider {
         world!!.gameRules.forEach { g -> gamerule[g] = JsonPrimitive(world.getGameRuleValue(GameRule.getByName(g)!!).toString()) }
 
         val worldInfo = mapOf(
-                "name" to JsonPrimitive(world.name),
-                "loadedChunks" to JsonPrimitive(world.loadedChunks.size),
-                // "entity" to world.entities.size, TODO
-                "player" to JsonPrimitive(world.players.size),
-                "gamerule" to Json.encodeToJsonElement(gamerule),
-                "difficulty" to JsonPrimitive(world.difficulty.name),
-                "size" to JsonPrimitive(world.worldFolder.length())
+            "name" to JsonPrimitive(world.name),
+            "loadedChunks" to JsonPrimitive(world.loadedChunks.size),
+            // "entities" to JsonPrimitive(world.entities.size), // TODO: java.lang.IllegalStateException: Asynchronous Chunk getEntities call!
+            "player" to JsonPrimitive(world.players.size),
+            "gamerule" to Json.encodeToJsonElement(gamerule),
+            "difficulty" to JsonPrimitive(world.difficulty.name),
+            "size" to JsonPrimitive(world.worldFolder.length())
         )
 
         return JsonObject(worldInfo)

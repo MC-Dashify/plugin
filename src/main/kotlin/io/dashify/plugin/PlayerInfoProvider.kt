@@ -17,20 +17,17 @@ object PlayerInfoProvider {
     }
     fun getPlayerInfo(playerUid: String): JsonObject{
         val player = plugin.server.getPlayer(UUID.fromString(playerUid))!!
+        var clientBrandName: String? = null
 
-//        try {
-//            Player::class.java.getMethod("getClientBrandName").invoke(player)
-//        } catch (e: Exception) {
-//            throw e
-//        }
+        try {
+            clientBrandName = Player::class.java.getMethod("getClientBrandName").invoke(player).toString()
+        } catch (_: Exception) {}
 
         val playerInfo = mapOf(
             "name" to JsonPrimitive(player.name),
             "uuid" to JsonPrimitive(player.uniqueId.toString()),
             "ping" to JsonPrimitive(player.ping),
-
-            //"clientBrandName" to JsonPrimitive(player),
-
+            "clientBrandName" to JsonPrimitive(clientBrandName)
         )
 
         return JsonObject(playerInfo)
