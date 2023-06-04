@@ -1,9 +1,8 @@
 package io.dashify.plugin.router
 
-import io.dashify.plugin.ConfigHandler
-import io.dashify.plugin.DashifyPluginMain
-import io.dashify.plugin.PlayerInfoProvider
-import io.dashify.plugin.WorldInfoProvider
+import io.dashify.plugin.util.ConfigHandler
+import io.dashify.plugin.manager.PlayerManager
+import io.dashify.plugin.manager.WorldManager
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -11,7 +10,6 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.util.*
 
 fun Application.dashify() {
     fun checkIsEnabled() = ConfigHandler["enabled"].toString().toBoolean()
@@ -33,48 +31,45 @@ fun Application.dashify() {
     routing {
         get("/") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
-
             call.response.status(HttpStatusCode.OK)
         }
+
         get("/worlds") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
-
-            call.respond(WorldInfoProvider.getWorldsList())
+            call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
         }
         get("/worlds/{uuid}") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
-            try {
-                UUID.fromString(call.parameters["uuid"])
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, hashMapOf("error" to "invalid UUID"))
-            }
 
-            val worldUuids = DashifyPluginMain.plugin.server.worlds.map { it.uid }.toList()
-            if (worldUuids.contains(UUID.fromString(call.parameters["uuid"]))) {
-                val result = WorldInfoProvider.getWorldInfo(call.parameters["uuid"]!!)
-                if (result["error"] == null) {
-                    call.respond(HttpStatusCode.OK, result)
-                } else {
-                    call.respond(HttpStatusCode.InternalServerError, result)
-                }
-            } else {
-                call.respond(HttpStatusCode.BadRequest, hashMapOf("error" to "invalid UUID"))
-            }
+            val result = WorldManager.getWorldInfo(call.parameters["uuid"]!!)
+            if (result["error"] == null) { call.respond(HttpStatusCode.OK, result) }
+            else { call.respond(result["statusCode"] as HttpStatusCode, result) }
         }
+
         get("/players") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
-
-            call.respond(PlayerInfoProvider.getPlayerList())
+            call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
         }
         get("/players/{uuid}") {
             if (!checkIsEnabled()) return@get call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
-            DashifyPluginMain.plugin.server.onlinePlayers.forEach {
-                if (call.parameters["uuid"] == it.uniqueId.toString()) {
-                    call.respond(PlayerInfoProvider.getPlayerInfo(it.uniqueId.toString()))
-                } else {
-                    call.response.status(HttpStatusCode.BadRequest)
-                }
-            }
+
+            val result = PlayerManager.getPlayerInfo(call.parameters["uuid"]!!)
+            if (result["error"] == null) { call.respond(HttpStatusCode.OK, result) }
+            else { call.respond(result["statusCode"] as HttpStatusCode, result) }
+        }
+        post("/players/{uuid}/kick") {
+            if (!checkIsEnabled()) return@post call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
+
+            val result = PlayerManager.managePlayer("kick", call.parameters["uuid"]!!, call.request.queryParameters["reason"])
+            if (result["error"] == null) { call.response.status(HttpStatusCode.OK) }
+            else { call.respond(result["statusCode"] as HttpStatusCode, result) }
+        }
+        post("/players/{uuid}/ban") {
+            if (!checkIsEnabled()) return@post call.respond(HttpStatusCode.fromValue(418), "I'm a tea pot :3")
+
+            val result = PlayerManager.managePlayer("ban", call.parameters["uuid"]!!, call.request.queryParameters["reason"])
+            if (result["error"] == null) { call.response.status(HttpStatusCode.OK) }
+            else { call.respond(result["statusCode"] as HttpStatusCode, result) }
         }
     }
 }

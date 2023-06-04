@@ -1,5 +1,6 @@
 package io.dashify.plugin
 
+import io.dashify.plugin.util.ConfigHandler
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

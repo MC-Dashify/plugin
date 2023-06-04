@@ -1,6 +1,7 @@
 package io.dashify.plugin
 
 import io.dashify.plugin.router.dashify
+import io.dashify.plugin.util.ConfigHandler
 import io.ktor.server.engine.*
 import io.ktor.server.jetty.*
 

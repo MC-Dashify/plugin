@@ -1,4 +1,4 @@
-package io.dashify.plugin
+package io.dashify.plugin.util
 
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
 import org.bukkit.configuration.file.FileConfiguration

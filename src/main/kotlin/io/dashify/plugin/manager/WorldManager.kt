@@ -1,12 +1,13 @@
-package io.dashify.plugin
+package io.dashify.plugin.manager
 
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
 import io.dashify.plugin.util.DashifyCoroutine.await
 import io.dashify.plugin.util.FileUtil.getFolderSize
+import io.ktor.http.*
 import org.bukkit.GameRule
 import java.util.*
 
-object WorldInfoProvider {
+object WorldManager {
     fun getWorldsList(): HashMap<String, Any> {
         val worlds = arrayListOf<String>()
         plugin.server.worlds.forEach { worlds.add(it.uid.toString()) }
@@ -16,6 +17,21 @@ object WorldInfoProvider {
 
     suspend fun getWorldInfo(worldUid: String): HashMap<String, Any> {
         val result = HashMap<String, Any>()
+
+        try { UUID.fromString(worldUid) }
+        catch (e: IllegalArgumentException) {
+            result["statusCode"] = HttpStatusCode.BadRequest
+            result["error"] = "invalid UUID"
+            return result
+        }
+
+        val worldUuids = plugin.server.worlds.map { it.uid }.toList()
+        if (!worldUuids.contains(UUID.fromString(worldUid))) {
+            result["statusCode"] = HttpStatusCode.BadRequest
+            result["error"] = "World not found"
+            return result
+        }
+
         runCatching {
             val world = plugin.server.getWorld(UUID.fromString(worldUid))!!
 
@@ -35,6 +51,7 @@ object WorldInfoProvider {
                 result["size"] = getFolderSize(world.worldFolder)
             }
         }.onFailure {
+            result["statusCode"] = HttpStatusCode.InternalServerError
             result["error"] = it.stackTraceToString()
         }
         return result
