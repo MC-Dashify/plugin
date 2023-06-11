@@ -1,11 +1,13 @@
 package io.dashify.plugin.manager
 
+import com.google.gson.Gson
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
 import io.dashify.plugin.util.DashifyCoroutine.await
 import io.ktor.http.*
+import net.kyori.adventure.text.Component.text
 import org.bukkit.BanList
-import org.bukkit.entity.Player
 import java.util.*
+import kotlin.collections.HashMap
 
 object PlayerManager {
     fun getPlayerList(): HashMap<String, Any> {
@@ -32,20 +34,16 @@ object PlayerManager {
             return result
         }
 
-        var clientBrandName: String? = null
-        try { clientBrandName = Player::class.java.getMethod("getClientBrandName").invoke(player).toString() }
-        catch (_: Exception) { }
-
         result["name"] = player.name
         result["uuid"] = player.uniqueId.toString()
         result["ping"] = player.ping
-        result["clientBrandName"] = clientBrandName
+        result["clientBrandName"] = player.clientBrandName
         result["avatar"] = "https://crafatar.com/avatars/${player.uniqueId}"
 
         return result
     }
 
-    suspend fun managePlayer(type: String, playerUid: String, reason: String?): HashMap<String, Any> {
+    suspend fun managePlayer(type: String, playerUid: String, reasonContext: String?): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 
         try { UUID.fromString(playerUid) }
@@ -62,10 +60,20 @@ object PlayerManager {
             return result
         }
 
+        val reason: String?
+        try {
+            reason = (Gson().fromJson(reasonContext, HashMap::class.java) as HashMap<*, *>)["reason"].toString()
+        } catch (e: Exception) {
+            result["statusCode"] = HttpStatusCode.BadRequest
+            result["error"] = "Invalid JSON"
+            return result
+        }
+
         runCatching {
             await {
                 if (type == "ban") { plugin.server.getBanList(BanList.Type.NAME).addBan(player.name, reason, null, null) }
-                player.kickPlayer(reason)
+                if (reason == "") { player.kick() }
+                else { player.kick(text(reason)) }
                 result["statusCode"] = HttpStatusCode.OK
             }
         }.onFailure {
@@ -75,4 +83,5 @@ object PlayerManager {
 
         return result
     }
+
 }

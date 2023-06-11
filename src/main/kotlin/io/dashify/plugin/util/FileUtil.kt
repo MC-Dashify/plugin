@@ -25,6 +25,7 @@ object FileUtil {
 
     fun getFolderSize(dir: File): String {
         val size = dirSize(dir)
+
         if (size <= 0)
             return "0MB"
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
@@ -33,4 +34,5 @@ object FileUtil {
             size / 1024.0.pow(digitGroups.toDouble())
         ) + " " + units[digitGroups]
     }
+
 }
