@@ -5,7 +5,6 @@ plugins {
 }
 
 group = "io.dashify.plugin"
-version = "1.0-SNAPSHOT"
 val ktorVersion = "2.3.1"
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
@@ -41,7 +40,7 @@ tasks {
     }
 
     shadowJar {
-        archiveBaseName.set("dashify-plugin-all")
+        archiveBaseName.set("dashify-plugin")
         from(sourceSets["main"].output)
         val plugins = File(rootDir, ".server/plugins/")
 
