@@ -17,13 +17,11 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8:1.8.21"))
     compileOnly("org.mindrot:jbcrypt:0.4")
 
-    compileOnly("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    compileOnly("io.ktor:ktor-server-cors-jvm:2.3.1")
-    compileOnly("io.ktor:ktor-server-jetty-jvm:$ktorVersion")
-    compileOnly("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    compileOnly("io.ktor:ktor-serialization-jackson:$ktorVersion")
-
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
 }
 
 kotlin {
@@ -44,6 +42,18 @@ tasks {
 
     shadowJar {
         archiveBaseName.set("dashify-plugin-all")
+        from(sourceSets["main"].output)
+        val plugins = File(rootDir, ".server/plugins/")
+
+        doLast {
+            copy {
+                from(archiveFile)
+                if (File(plugins, archiveFileName.get()).exists()) {
+                    File(plugins, archiveFileName.get()).delete()
+                }
+                into(plugins)
+            }
+        }
     }
 
     register<Jar>("buildJar") {

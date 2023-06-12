@@ -34,5 +34,4 @@ object FileUtil {
             size / 1024.0.pow(digitGroups.toDouble())
         ) + " " + units[digitGroups]
     }
-
 }

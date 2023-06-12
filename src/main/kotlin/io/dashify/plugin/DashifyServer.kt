@@ -3,10 +3,10 @@ package io.dashify.plugin
 import io.dashify.plugin.router.dashify
 import io.dashify.plugin.util.ConfigHandler
 import io.ktor.server.engine.*
-import io.ktor.server.jetty.*
+import io.ktor.server.netty.*
 
 private var isServerRunning: Boolean = false
-private val server = embeddedServer(Jetty,
+private val server = embeddedServer(Netty,
     environment = applicationEngineEnvironment {
         module {
             dashify()
