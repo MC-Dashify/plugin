@@ -1,6 +1,8 @@
 # MC-Dashify plugin
 - api-version: 1.19.4
 - bukkit: Paper
+- [![Build & Publish to Release](https://github.com/MC-Dashify/plugin/actions/workflows/main.yml/badge.svg)](https://github.com/MC-Dashify/plugin/actions/workflows/main.yml)
+
 
 ## API
 - `GET` `/worlds` - Returns a list of all worlds' uid
