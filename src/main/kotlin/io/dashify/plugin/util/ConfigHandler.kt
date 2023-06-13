@@ -11,9 +11,7 @@ import java.io.File
 const val CONFIG_VERSION = 1
 
 object ConfigHandler {
-
     private lateinit var config: FileConfiguration
-
     fun initConfig() {
         plugin.reloadConfig()
         if (!File(plugin.dataFolder, "config.yml").exists()) {
