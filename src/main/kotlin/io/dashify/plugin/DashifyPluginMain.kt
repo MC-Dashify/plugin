@@ -1,7 +1,6 @@
 package io.dashify.plugin
 
 import io.dashify.plugin.util.ConfigHandler
-import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class DashifyPluginMain : JavaPlugin() {
