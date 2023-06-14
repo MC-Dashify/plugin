@@ -16,7 +16,7 @@ class DashifyCommand : CommandExecutor {
             sender.sendMessage(text("Cannot execute this command from console.", TextColor.color(0xFF0000)))
         } else {
             if (args[0] == "key") {
-                val key = BCrypt.hashpw(StringUtil.generateRandomString(128), BCrypt.gensalt())
+                val key = BCrypt.hashpw(StringUtil.generateRandomString(64), BCrypt.gensalt())
                 ConfigHandler["key"] = key
                 sender.sendMessage(text("Dashify key (re)generated."))
             }
