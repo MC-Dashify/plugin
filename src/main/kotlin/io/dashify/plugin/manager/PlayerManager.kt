@@ -7,7 +7,6 @@ import io.ktor.http.*
 import net.kyori.adventure.text.Component.text
 import org.bukkit.BanList
 import java.util.*
-import kotlin.collections.HashMap
 
 object PlayerManager {
     fun getPlayerList(): HashMap<String, Any> {
@@ -20,15 +19,16 @@ object PlayerManager {
     fun getPlayerInfo(playerUid: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
 
-        try { UUID.fromString(playerUid) }
-        catch (e: IllegalArgumentException) {
+        try {
+            UUID.fromString(playerUid)
+        } catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
             return result
         }
 
         val player = plugin.server.getPlayer(UUID.fromString(playerUid))
-        if (player == null ) {
+        if (player == null) {
             result["statusCode"] = HttpStatusCode.NotFound
             result["error"] = "Player not found"
             return result
@@ -46,15 +46,16 @@ object PlayerManager {
     suspend fun managePlayer(type: String, playerUid: String, reasonContext: String?): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 
-        try { UUID.fromString(playerUid) }
-        catch (e: IllegalArgumentException) {
+        try {
+            UUID.fromString(playerUid)
+        } catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
             return result
         }
 
         val player = plugin.server.getPlayer(UUID.fromString(playerUid))
-        if (player == null ) {
+        if (player == null) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "Player not found"
             return result
@@ -71,9 +72,14 @@ object PlayerManager {
 
         runCatching {
             await {
-                if (type == "ban") { plugin.server.getBanList(BanList.Type.NAME).addBan(player.name, reason, null, null) }
-                if (reason == "") { player.kick() }
-                else { player.kick(text(reason)) }
+                if (type == "ban") {
+                    plugin.server.getBanList(BanList.Type.NAME).addBan(player.name, reason, null, null)
+                }
+                if (reason == "") {
+                    player.kick()
+                } else {
+                    player.kick(text(reason))
+                }
                 result["statusCode"] = HttpStatusCode.OK
             }
         }.onFailure {

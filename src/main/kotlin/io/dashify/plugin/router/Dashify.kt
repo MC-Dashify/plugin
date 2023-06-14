@@ -3,6 +3,7 @@ package io.dashify.plugin.router
 import io.dashify.plugin.DashifyPluginMain.Companion.plugin
 import io.dashify.plugin.manager.PlayerManager
 import io.dashify.plugin.manager.RuntimeManager
+import io.dashify.plugin.manager.SystemManager
 import io.dashify.plugin.manager.WorldManager
 import io.dashify.plugin.util.ConfigHandler
 import io.ktor.http.*
@@ -107,20 +108,15 @@ fun Application.dashify() {
                 call.respond(result["statusCode"] as HttpStatusCode, result)
             }
         }
-
-        get("/tps") {
+        get("/stats") {
             if (!checkIsEnabled()) return@get call.respond(
                 HttpStatusCode.fromValue(418),
                 hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
             )
-            call.respond(HttpStatusCode.OK, plugin.server.tps)
-        }
-        get("/jvm") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            call.respond(HttpStatusCode.OK, RuntimeManager.getMemory())
+            val stats = SystemManager.getSysInfo()
+            stats["jvm"] = RuntimeManager.getMemory()
+            stats["tps"] = plugin.server.tps
+            call.respond(HttpStatusCode.OK, stats)
         }
     }
 }
