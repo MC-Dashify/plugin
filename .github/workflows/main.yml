@@ -2,6 +2,8 @@ name: Build & Publish to Release
 
 on:
   push:
+    paths:
+      - "build.gradle.kts"
     branches: [master]
   workflow_dispatch:
 
