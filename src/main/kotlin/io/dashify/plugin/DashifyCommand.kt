@@ -3,7 +3,9 @@ package io.dashify.plugin
 import io.dashify.plugin.util.ConfigHandler
 import io.dashify.plugin.util.StringUtil
 import net.kyori.adventure.text.Component.text
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.command.*
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
@@ -19,6 +21,12 @@ class DashifyCommand : CommandExecutor {
                 val key = BCrypt.hashpw(StringUtil.generateRandomString(64), BCrypt.gensalt())
                 ConfigHandler["key"] = key
                 sender.sendMessage(text("Dashify key (re)generated."))
+                sender.sendMessage(
+                    text("Click ").append(
+                        text("here", TextColor.color(0xFFCF2C)).decorate(TextDecoration.BOLD, TextDecoration.UNDERLINED)
+                            .clickEvent(ClickEvent.copyToClipboard(key))
+                    ).append(text(" to copy"))
+                )
             }
 
             if (args[0] == "enable") {
