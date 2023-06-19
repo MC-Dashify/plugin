@@ -5,17 +5,12 @@
 
 
 ## API
-- `GET` `/worlds` - Returns a list of all worlds' uid
-- `GET` `/worlds/{uid}` - Returns world's info
-
-
-- `GET` `/players` - Returns a list of all players' uuid
-- `GET` `/players/{uuid}` - Returns player's info
-- `POST` `/players/{uuid}/kick` - Kicks player
-    - Body: `{"reason": "string"}` - Raw JSON, Required.
-- `POST` `/players/{uuid}/ban` - Bans player
-    - Body: `{"reason": "string"}` - Raw JSON, Required.
-
-
-- `GET` `/jvm` - Returns JVM
-- `GET` `/tps` - Returns TPS
+| Method | URL                    | Required      | Response body           | Description                         |
+|--------|------------------------|---------------|-------------------------|-------------------------------------|
+| GET    | `/worlds`              | N/A           | N/A                     | Returns a list of all worlds' uid   |
+| GET    | `/worlds/<uid>`        | World's uid   | N/A                     | Returns world's info                |
+| GET    | `/players`             | N/A           | N/A                     | Returns a list of all players' uuid |
+| GET    | `/players/<uuid>`      | Player's uuid | N/A                     | Returns player's info               |
+| GET    | `/stats`               | N/A           | N/A                     | Returns system's info               |
+| POST   | `/players/<uuid>/kick` | Player's uuid | `{"reason":"<string>"}` | Kicks player                        |
+| POST   | `/players/<uuid>/ban`  | Player's uuid | `{"reason":"<string>"}` | Bans player                         |
