@@ -1,7 +1,7 @@
-package io.dashify.plugin
+package cc.dashify.plugin
 
-import io.dashify.plugin.util.ConfigHandler
-import io.dashify.plugin.util.StringUtil
+import cc.dashify.plugin.util.ConfigHandler
+import cc.dashify.plugin.util.StringUtil
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.TextColor

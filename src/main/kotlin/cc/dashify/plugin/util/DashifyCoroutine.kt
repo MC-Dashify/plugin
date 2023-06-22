@@ -1,6 +1,6 @@
-package io.dashify.plugin.util
+package cc.dashify.plugin.util
 
-import io.dashify.plugin.DashifyPluginMain
+import cc.dashify.plugin.DashifyPluginMain
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

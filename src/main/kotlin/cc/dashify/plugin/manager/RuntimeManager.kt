@@ -1,4 +1,4 @@
-package io.dashify.plugin.manager
+package cc.dashify.plugin.manager
 
 object RuntimeManager {
     fun getMemory(): HashMap<String, Any> {

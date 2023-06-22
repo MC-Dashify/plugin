@@ -1,11 +1,11 @@
-package io.dashify.plugin.router
+package cc.dashify.plugin.router
 
-import io.dashify.plugin.DashifyPluginMain.Companion.plugin
-import io.dashify.plugin.manager.PlayerManager
-import io.dashify.plugin.manager.RuntimeManager
-import io.dashify.plugin.manager.SystemManager
-import io.dashify.plugin.manager.WorldManager
-import io.dashify.plugin.util.ConfigHandler
+import cc.dashify.plugin.DashifyPluginMain.Companion.plugin
+import cc.dashify.plugin.manager.PlayerManager
+import cc.dashify.plugin.manager.RuntimeManager
+import cc.dashify.plugin.manager.SystemManager
+import cc.dashify.plugin.manager.WorldManager
+import cc.dashify.plugin.util.ConfigHandler
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*

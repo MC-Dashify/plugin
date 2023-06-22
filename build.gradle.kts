@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.serialization") version "1.8.21"
 }
 
-group = "io.dashify.plugin"
+group = "cc.dashify.plugin"
 val ktorVersion = "2.3.1"
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")

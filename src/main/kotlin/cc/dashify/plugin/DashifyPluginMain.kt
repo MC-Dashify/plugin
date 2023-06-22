@@ -1,7 +1,7 @@
-package io.dashify.plugin
+package cc.dashify.plugin
 
-import io.dashify.plugin.util.ConfigHandler
-import io.dashify.plugin.util.StringUtil
+import cc.dashify.plugin.util.ConfigHandler
+import cc.dashify.plugin.util.StringUtil
 import org.bukkit.plugin.java.JavaPlugin
 import org.mindrot.jbcrypt.BCrypt
 

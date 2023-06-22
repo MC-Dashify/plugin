@@ -1,4 +1,4 @@
-package io.dashify.plugin.util
+package cc.dashify.plugin.util
 
 import java.io.File
 import java.text.DecimalFormat

@@ -1,8 +1,8 @@
-package io.dashify.plugin.manager
+package cc.dashify.plugin.manager
 
 import com.google.gson.Gson
-import io.dashify.plugin.DashifyPluginMain.Companion.plugin
-import io.dashify.plugin.util.DashifyCoroutine.await
+import cc.dashify.plugin.DashifyPluginMain.Companion.plugin
+import cc.dashify.plugin.util.DashifyCoroutine.await
 import io.ktor.http.*
 import net.kyori.adventure.text.Component.text
 import org.bukkit.BanList

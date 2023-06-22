@@ -1,6 +1,6 @@
-package io.dashify.plugin.util
+package cc.dashify.plugin.util
 
-import io.dashify.plugin.DashifyPluginMain.Companion.plugin
+import cc.dashify.plugin.DashifyPluginMain.Companion.plugin
 import org.bukkit.configuration.file.FileConfiguration
 import java.io.File
 

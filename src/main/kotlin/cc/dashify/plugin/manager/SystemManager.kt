@@ -1,4 +1,4 @@
-package io.dashify.plugin.manager
+package cc.dashify.plugin.manager
 
 import com.sun.management.OperatingSystemMXBean
 import java.lang.management.ManagementFactory

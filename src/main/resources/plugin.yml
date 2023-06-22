@@ -1,5 +1,5 @@
 name: Dashify
-main: io.dashify.plugin.DashifyPluginMain
+main: cc.dashify.plugin.DashifyPluginMain
 version: 0.0.1
 api-version: '1.19'
 
