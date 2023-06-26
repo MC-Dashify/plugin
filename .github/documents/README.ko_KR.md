@@ -12,7 +12,7 @@
 
 <p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/README.ko_KR.md">한국어</a></p>
 
-<h1 align="center">이 레포지토리는 Dashify의 launcher 레포지토리 입니다.</h1>
+<h1 align="center">이 레포지토리는 Dashify의 plugin 레포지토리 입니다.</h1>
 
 ## 문제 해결
 
