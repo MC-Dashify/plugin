@@ -18,7 +18,7 @@ Dashify에 기여하기로 결정하셨군요. 수많은 훌륭한 오픈소스 
 
 플러그인을 빌드하고 서버 플러그인 폴더 (`./server/plugins/`)에 복사:
 ```bash
-./gradlew clean buildJar
+./gradlew clean shadowJar
 ```
 
 ## 코드 포매팅

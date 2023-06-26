@@ -21,7 +21,7 @@ We use Gradle Kotlin DSL as build system.
 Build and copy the plugin to the server plugin folder (`./server/plugins/`):
 
 ```bash
-./gradlew clean buildJar
+./gradlew clean shadowJar
 ```
 
 ## Code Formatting
