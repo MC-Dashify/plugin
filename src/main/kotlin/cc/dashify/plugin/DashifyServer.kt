@@ -13,7 +13,7 @@ private val server = embeddedServer(Netty,
         }
         connector {
             port = ConfigHandler["apiPort"].toString().toInt()
-            host = "0.0.0.0"
+            host = if(ConfigHandler["exposePort"].toString().toBoolean()) { "0.0.0.0" } else { "localhost" }
         }
         classLoader = (DashifyPluginMain)::class.java.classLoader
     }
