@@ -15,10 +15,10 @@ object WorldManager {
         return hashMapOf("worlds" to worlds)
     }
 
-    suspend fun getWorldInfo(worldUid: String): HashMap<String, Any> {
+    suspend fun getWorldInfo(worldUuid: String): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 
-        try { UUID.fromString(worldUid) }
+        try { UUID.fromString(worldUuid) }
         catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
@@ -26,14 +26,14 @@ object WorldManager {
         }
 
         val worldUuids = plugin.server.worlds.map { it.uid }.toList()
-        if (!worldUuids.contains(UUID.fromString(worldUid))) {
+        if (!worldUuids.contains(UUID.fromString(worldUuid))) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "World not found"
             return result
         }
 
         runCatching {
-            val world = plugin.server.getWorld(UUID.fromString(worldUid))!!
+            val world = plugin.server.getWorld(UUID.fromString(worldUuid))!!
 
             var entities: Int
             await {

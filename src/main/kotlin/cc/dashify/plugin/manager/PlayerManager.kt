@@ -10,24 +10,24 @@ import java.util.*
 
 object PlayerManager {
     fun getPlayerList(): HashMap<String, Any> {
-        val players = arrayListOf<String>()
-        plugin.server.onlinePlayers.forEach { players.add(it.uniqueId.toString()) }
+        val players = arrayListOf<HashMap<String, Any>>()
+        plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
 
         return hashMapOf("players" to players)
     }
 
-    fun getPlayerInfo(playerUid: String): HashMap<String, Any?> {
+    fun getPlayerInfo(playerUuid: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
 
         try {
-            UUID.fromString(playerUid)
+            UUID.fromString(playerUuid)
         } catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
             return result
         }
 
-        val player = plugin.server.getPlayer(UUID.fromString(playerUid))
+        val player = plugin.server.getPlayer(UUID.fromString(playerUuid))
         if (player == null) {
             result["statusCode"] = HttpStatusCode.NotFound
             result["error"] = "Player not found"
