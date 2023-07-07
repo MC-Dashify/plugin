@@ -28,15 +28,15 @@ Dashify plugin is only compatible with PaperMC.
 -   NOTE: All HTTP requests requires `Authorization` header like `Bearer your_key_here`.
   >   Key information can be found in the file `Dashify/config.yml` in the server plugin folder.
 
-| Request Method | Path                   | Requirement   | Response body           | Description                                          |
-|----------------|------------------------|---------------|-------------------------|------------------------------------------------------|
+| Request Method | Path                   | Requirement   | Response body           | Description                                           |
+|----------------|------------------------|---------------|-------------------------|-------------------------------------------------------|
 | GET            | `/worlds`              | N/A           | N/A                     | Returns a list of all world's uuid and world's name   |
-| GET            | `/worlds/<uid>`        | World's uid   | N/A                     | Returns world's info                                 |
+| GET            | `/worlds/<uid>`        | World's uid   | N/A                     | Returns world's info                                  |
 | GET            | `/players`             | N/A           | N/A                     | Returns a list of all player's uuid and player's name |
-| GET            | `/players/<uuid>`      | Player's uuid | N/A                     | Returns player's info                                |
-| GET            | `/stats`               | N/A           | N/A                     | Returns system's info                                |
-| POST           | `/players/<uuid>/kick` | Player's uuid | `{"reason":"<string>"}` | Kicks player                                         |
-| POST           | `/players/<uuid>/ban`  | Player's uuid | `{"reason":"<string>"}` | Bans player                                          |
+| GET            | `/players/<uuid>`      | Player's uuid | N/A                     | Returns player's info                                 |
+| GET            | `/stats`               | N/A           | N/A                     | Returns system's info                                 |
+| POST           | `/players/<uuid>/kick` | Player's uuid | `{"reason":"<string>"}` | Kicks player                                          |
+| POST           | `/players/<uuid>/ban`  | Player's uuid | `{"reason":"<string>"}` | Bans player                                           |
 
 ## Code of Conduct
 
