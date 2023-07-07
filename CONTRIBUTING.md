@@ -28,3 +28,4 @@ Build and copy the plugin to the server plugin folder (`./server/plugins/`):
 
 We use Intellij Kotlin style guide
 for code formatting. Using Intellij IDEA will make this thing easier.
+

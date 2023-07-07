@@ -10,6 +10,10 @@ import org.bukkit.command.*
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
+/**
+ * DashifyCommand
+ * Dashify plugin command executor
+ */
 class DashifyCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (!sender.isOp) {
@@ -52,6 +56,10 @@ class DashifyCommand : CommandExecutor {
     }
 }
 
+/**
+ * DashifyCommandTabComplete
+ * Dashify plugin command tab completer
+ */
 class DashifyCommandTabComplete : TabCompleter {
     override fun onTabComplete(
         sender: CommandSender,

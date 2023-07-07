@@ -6,7 +6,10 @@ import java.nio.file.FileStore
 import java.nio.file.Files
 import java.nio.file.Paths
 
-
+/**
+ * SystemManager
+ * manages the system
+ */
 object SystemManager {
     fun getSysInfo(): HashMap<String, Any> {
         val systemInfo = HashMap<String, Any>()

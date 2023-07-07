@@ -1,6 +1,11 @@
 package cc.dashify.plugin.manager
 
 object RuntimeManager {
+    /**
+     * getMemory()
+     * returns the memory usage of the server
+     * @return HashMap<String, Any>
+     */
     fun getMemory(): HashMap<String, Any> {
         return hashMapOf(
             "maxMemory" to "${Runtime.getRuntime().maxMemory() / (1024 * 1024)} MB",

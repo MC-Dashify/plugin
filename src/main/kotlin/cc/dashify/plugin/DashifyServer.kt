@@ -19,6 +19,10 @@ private val server = embeddedServer(Netty,
     }
 )
 
+/**
+ * startKtor()
+ * starts the Ktor server
+ */
 fun startKtor() {
     if (isServerRunning) return
     Thread {
@@ -27,17 +31,30 @@ fun startKtor() {
     isServerRunning = true
 }
 
+/**
+ * stopKtor()
+ * stops the Ktor server
+ */
 fun stopKtor() {
     if (!isServerRunning) return
     server.stop(20, 20)
     isServerRunning = false
 }
 
+/**
+ * restart()
+ * restarts the Ktor server
+ */
 fun restart() {
     stopKtor()
     startKtor()
 }
 
+/**
+ * checkIsKtorServerRunning()
+ * checks if the Ktor server is running
+ * @return Boolean
+ */
 fun checkIsKtorServerRunning(): Boolean {
     return isServerRunning
 }

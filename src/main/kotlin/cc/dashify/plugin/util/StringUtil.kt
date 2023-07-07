@@ -2,6 +2,10 @@ package cc.dashify.plugin.util
 
 import kotlin.random.Random
 
+/**
+ * StringUtil
+ * @author aroxu
+ */
 object StringUtil {
     fun generateRandomString(length: Int): String {
         val charPool = mutableListOf<Char>()
