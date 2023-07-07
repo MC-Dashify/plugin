@@ -16,8 +16,8 @@
 
 ## 문제 해결
 
-### 서버의 Bukkit을 확인하세요.
-Dashify 플러그인은 PaperMC에만 호환됩니다.
+### 제일 먼저, 서버 구동 소프트웨어를 확인하십시오.
+Dashify 플러그인은 PaperMC와 이하 포크에 호환됩니다. 권장되는 서버 소프트웨어는 PaperMC입니다.
 
 ## API Endpoints
 -   참고: 모든 HTTP 요청에는 `Authorization` 헤더에 `Bearer your_key_here` 와 같은 형식의 토큰 인증이 필요합니다.
@@ -25,13 +25,13 @@ Dashify 플러그인은 PaperMC에만 호환됩니다.
 
 | 요청 메서드  | 경로                     | 필요한 경로 파라미터 | Response body           | 설명                                 |
 |---------|------------------------|-------------|-------------------------|------------------------------------|
-| GET     | `/worlds`              | N/A         | N/A                     | 모든 세계의 uuid와 월드 이름의 리스트를 반환합니다     |
-| GET     | `/worlds/<uid>`        | 세계의 uid     | N/A                     | 세계의 정보를 반환합니다                      |
-| GET     | `/players`             | N/A         | N/A                     | 모든 플레이어의 uuid와 플레이어 이름의 리스트를 반환합니다 |
-| GET     | `/players/<uuid>`      | 플레이어의 uuid  | N/A                     | 플레이어의 정보를 반환합니다                    |
+| GET     | `/worlds`              | N/A         | N/A                     | 모든 세계의 UUID와 월드 이름의 리스트를 반환합니다     |
+| GET     | `/worlds/<UUID>`       | 세계의 UUID    | N/A                     | 세계의 정보를 반환합니다                      |
+| GET     | `/players`             | N/A         | N/A                     | 모든 플레이어의 UUID와 플레이어 이름의 리스트를 반환합니다 |
+| GET     | `/players/<UUID>`      | 플레이어의 UUID  | N/A                     | 플레이어의 정보를 반환합니다                    |
 | GET     | `/stats`               | N/A         | N/A                     | 시스템의 정보를 반환합니다                     |
-| POST    | `/players/<uuid>/kick` | 플레이어의 uuid  | `{"reason":"<string>"}` | 플레이어를 추방합니다                        |
-| POST    | `/players/<uuid>/ban`  | 플레이어의 uuid  | `{"reason":"<string>"}` | 플레이어를 차단합니다                        |
+| POST    | `/players/<UUID>/kick` | 플레이어의 UUID  | `{"reason":"<string>"}` | 플레이어를 추방합니다                        |
+| POST    | `/players/<UUID>/ban`  | 플레이어의 UUID  | `{"reason":"<string>"}` | 플레이어를 차단합니다                        |
 
 ## Code of Conduct
 

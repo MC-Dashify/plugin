@@ -4,28 +4,29 @@
 
 ## Contribution Guidelines
 
-Thank you for choosing to contribute in Dashify. There are a ton of great open-source projects out there, so we
-appreciate your interest in contributing to Dashify.
+Thank you for your decision to Dashify contribution.
+
+Though there are a lot of open-source projects out there, we appreciate your interest.
 
 ## Open Issues
 
-If you would like to help in working on open issues. Lookout for following tags: `good first issue`, `help wanted`,
+If you would like to help in working on open issues. Look out for following tags: `good first issue`, `help wanted`,
 and `open for contribution`.
 
-## Development setup
+## Development Setup
 
-We use Amazon Corretto version "17.0.6" as project SDK and Kotlin@1.8.21 as project language.
+We use JDK 17.0.6 as SDK and Kotlin 1.8.21 as project language.
 
 We use Gradle Kotlin DSL as build system.
 
-Build and copy the plugin to the server plugin folder (`./server/plugins/`):
+To run a test server with the plugin, you can use the following command:
 
 ```bash
-./gradlew clean shadowJar
+./gradlew clean runServer
 ```
 
 ## Code Formatting
 
-We use Intellij Kotlin style guide
-for code formatting. Using Intellij IDEA will make this thing easier.
+We use IntelliJ's Kotlin style guide for code formatting.
 
+Using IntelliJ IDEA will make this task much easier.

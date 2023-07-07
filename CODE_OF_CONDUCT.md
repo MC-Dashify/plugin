@@ -2,7 +2,7 @@
 
 <p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/CODE_OF_CONDUCT.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/CODE_OF_CONDUCT.ko_KR.md">한국어</a></p>
 
-We are a group based on openness and friendly, didactic, discussions.
+We are a group based on openness, friendliness, instructional, and discussions.
 
 We aspire to treat everybody equally, and value their contributions.
 

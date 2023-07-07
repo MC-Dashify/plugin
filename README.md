@@ -16,27 +16,27 @@
 
 <p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/README.ko_KR.md">한국어</a></p>
 
-<h1 align="center">THIS IS PLUGIN REPOSITORY FOR DASHIFY.</h1>
+<h1 align="center">THIS IS A PLUGIN REPOSITORY FOR DASHIFY.</h1>
 
 ## Troubleshooting
 
-### Check server bukkit
-Dashify plugin is only compatible with PaperMC.
+### Firstly, check server software
+Dashify plugin is only compatible from PaperMC and it's forks. The recommended server software is PaperMC.
 
 ## API Endpoints
 
--   NOTE: All HTTP requests requires `Authorization` header like `Bearer your_key_here`.
-  >   Key information can be found in the file `Dashify/config.yml` in the server plugin folder.
+-   NOTE: All HTTP requests requires `Authorization` header that looks like: `Bearer your_key_here`.
+  >   Key information can be found in the file `Dashify/config.yml` in the plugins folder.
 
 | Request Method | Path                   | Requirement   | Response body           | Description                                           |
 |----------------|------------------------|---------------|-------------------------|-------------------------------------------------------|
-| GET            | `/worlds`              | N/A           | N/A                     | Returns a list of all world's uuid and world's name   |
-| GET            | `/worlds/<uid>`        | World's uid   | N/A                     | Returns world's info                                  |
-| GET            | `/players`             | N/A           | N/A                     | Returns a list of all player's uuid and player's name |
-| GET            | `/players/<uuid>`      | Player's uuid | N/A                     | Returns player's info                                 |
+| GET            | `/worlds`              | N/A           | N/A                     | Returns a list of all world's UUID and world's name   |
+| GET            | `/worlds/<UUID>`       | World's UUID  | N/A                     | Returns world's info                                  |
+| GET            | `/players`             | N/A           | N/A                     | Returns a list of all player's UUID and player's name |
+| GET            | `/players/<UUID>`      | Player's UUID | N/A                     | Returns player's info                                 |
 | GET            | `/stats`               | N/A           | N/A                     | Returns system's info                                 |
-| POST           | `/players/<uuid>/kick` | Player's uuid | `{"reason":"<string>"}` | Kicks player                                          |
-| POST           | `/players/<uuid>/ban`  | Player's uuid | `{"reason":"<string>"}` | Bans player                                           |
+| POST           | `/players/<UUID>/kick` | Player's UUID | `{"reason":"<string>"}` | Kicks player                                          |
+| POST           | `/players/<UUID>/ban`  | Player's UUID | `{"reason":"<string>"}` | Bans player                                           |
 
 ## Code of Conduct
 
