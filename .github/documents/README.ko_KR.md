@@ -20,8 +20,8 @@
 Dashify 플러그인은 PaperMC에만 호환됩니다.
 
 ## API Endpoints
-- 참고: 모든 HTTP 요청에는 `Authorization` 헤더에 `Bearer your_key_here` 와 같은 형식의 토큰 인증이 필요합니다.
-  > 키 정보는 서버 플러그인 폴더 내 `Dashify/config.yml` 파일에서 확인할 수 있습니다.
+-   참고: 모든 HTTP 요청에는 `Authorization` 헤더에 `Bearer your_key_here` 와 같은 형식의 토큰 인증이 필요합니다.
+  >   키 정보는 서버 플러그인 폴더 내 `Dashify/config.yml` 파일에서 확인할 수 있습니다.
 
 | 요청 메서드  | 경로                     | 필요한 경로 파라미터 | Response body           | 설명                                 |
 |---------|------------------------|-------------|-------------------------|------------------------------------|

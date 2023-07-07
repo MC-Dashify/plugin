@@ -25,8 +25,8 @@ Dashify plugin is only compatible with PaperMC.
 
 ## API Endpoints
 
-- NOTE: All HTTP requests requires `Authorization` header like `Bearer your_key_here`.
-  > Key information can be found in the file `Dashify/config.yml` in the server plugin folder.
+-   NOTE: All HTTP requests requires `Authorization` header like `Bearer your_key_here`.
+  >   Key information can be found in the file `Dashify/config.yml` in the server plugin folder.
 
 | Request Method | Path                   | Requirement   | Response body           | Description                                          |
 |----------------|------------------------|---------------|-------------------------|------------------------------------------------------|
