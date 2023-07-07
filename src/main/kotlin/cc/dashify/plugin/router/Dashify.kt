@@ -15,6 +15,10 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+/**
+ * dashify()
+ * dashify router
+ */
 fun Application.dashify() {
     fun checkIsEnabled() = ConfigHandler["enabled"].toString().toBoolean()
 

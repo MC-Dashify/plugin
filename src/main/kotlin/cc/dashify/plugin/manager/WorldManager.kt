@@ -15,6 +15,12 @@ object WorldManager {
         return hashMapOf("worlds" to worlds)
     }
 
+    /**
+     * getWorldInfo()
+     * return world info
+     * @param worldUuid String
+     * @return HashMap<String, Any>
+     */
     suspend fun getWorldInfo(worldUuid: String): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 

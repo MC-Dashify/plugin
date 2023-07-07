@@ -10,8 +10,17 @@ import java.io.File
 
 const val CONFIG_VERSION = 1
 
+/**
+ * ConfigHandler
+ * handle config file
+ */
 object ConfigHandler {
     private lateinit var config: FileConfiguration
+
+    /**
+     * initConfig()
+     * init config file
+     */
     fun initConfig() {
         plugin.reloadConfig()
         if (!File(plugin.dataFolder, "config.yml").exists()) {
@@ -28,10 +37,28 @@ object ConfigHandler {
         }
     }
 
+    /**
+     * get()
+     * get config value
+     * @param key String
+     * @return Any?
+     */
     operator fun get(key: String) = config.get(key)
 
+    /**
+     * getSection()
+     * get config section
+     * @param key String
+     * @return FileConfiguration?
+     */
     fun getSection(key: String) = config.getConfigurationSection(key)
 
+    /**
+     * set()
+     * set config value
+     * @param key String
+     * @param value Any
+     */
     operator fun set(key: String, value: Any) {
         config.set(key, value)
         plugin.saveConfig()

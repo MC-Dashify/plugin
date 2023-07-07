@@ -1,5 +1,9 @@
 package cc.dashify.plugin.manager
 
+/**
+ * RuntimeManager
+ * manages the runtime
+ */
 object RuntimeManager {
     /**
      * getMemory()

@@ -11,6 +11,10 @@ import java.nio.file.Paths
  * manages the system
  */
 object SystemManager {
+    /**
+     * getSysInfo()
+     * @return HashMap<String, Any>
+     */
     fun getSysInfo(): HashMap<String, Any> {
         val systemInfo = HashMap<String, Any>()
         val osBean: OperatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean() as OperatingSystemMXBean

@@ -5,6 +5,10 @@ import java.text.DecimalFormat
 import kotlin.math.log10
 import kotlin.math.pow
 
+/**
+ * FileUtil
+ * handle file
+ */
 object FileUtil {
     private fun dirSize(dir: File): Long {
 
@@ -23,6 +27,12 @@ object FileUtil {
         return 0
     }
 
+    /**
+     * getFolderSize()
+     * get folder size
+     * @param dir File
+     * @return String
+     */
     fun getFolderSize(dir: File): String {
         val size = dirSize(dir)
 

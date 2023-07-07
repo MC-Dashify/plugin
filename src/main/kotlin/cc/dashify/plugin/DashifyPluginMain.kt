@@ -5,6 +5,10 @@ import cc.dashify.plugin.util.StringUtil
 import org.bukkit.plugin.java.JavaPlugin
 import org.mindrot.jbcrypt.BCrypt
 
+/**
+ * DashifyPluginMain
+ * the main class of the plugin.
+ */
 class DashifyPluginMain : JavaPlugin() {
     companion object {
         lateinit var plugin: JavaPlugin

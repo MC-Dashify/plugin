@@ -8,7 +8,16 @@ import net.kyori.adventure.text.Component.text
 import org.bukkit.BanList
 import java.util.*
 
+/**
+ * PlayerManager
+ * manage player
+ */
 object PlayerManager {
+    /**
+     * getPlayerList()
+     * return player list
+     * @return HashMap<String, Any>
+     */
     fun getPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any>>()
         plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
@@ -16,6 +25,12 @@ object PlayerManager {
         return hashMapOf("players" to players)
     }
 
+    /**
+     * getPlayerInfo()
+     * return player info
+     * @param playerUuid String
+     * @return HashMap<String, Any?>
+     */
     fun getPlayerInfo(playerUuid: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
 
@@ -43,6 +58,14 @@ object PlayerManager {
         return result
     }
 
+    /**
+     * managePlayer()
+     * kick or ban player
+     * @param type String
+     * @param playerUid String
+     * @param reasonContext String?
+     * @return HashMap<String, Any>
+     */
     suspend fun managePlayer(type: String, playerUid: String, reasonContext: String?): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 

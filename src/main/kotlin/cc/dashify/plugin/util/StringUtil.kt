@@ -7,6 +7,12 @@ import kotlin.random.Random
  * @author aroxu
  */
 object StringUtil {
+    /**
+     * generateRandomString()
+     * generate random string
+     * @param length Int
+     * @return String
+     */
     fun generateRandomString(length: Int): String {
         val charPool = mutableListOf<Char>()
         charPool.addAll(
