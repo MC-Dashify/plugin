@@ -1,26 +1,25 @@
 plugins {
-    kotlin("jvm") version "1.8.21"
-    id("com.github.johnrengelman.shadow") version ("7.1.1")
-    kotlin("plugin.serialization") version "1.8.21"
+    idea
+    kotlin("jvm") version Dependency.Kotlin.Version
+    kotlin("plugin.serialization") version Dependency.Kotlin.Version
+    id("net.minecrell.plugin-yml.paper") version "0.6.0"
+    id("xyz.jpenilla.run-paper") version "2.1.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "cc.dashify.plugin"
-val ktorVersion = "2.3.1"
+version = "0.0.1"
+
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
     mavenCentral()
+    Dependency.repos.forEach { maven(it) }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
-    compileOnly(kotlin("stdlib-jdk8:1.8.21"))
-    compileOnly("org.mindrot:jbcrypt:0.4")
-
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
+    library(kotlin("stdlib"))
+    compileOnly("io.papermc.paper:paper-api:${Dependency.Paper.Version}-R0.1-SNAPSHOT")
+    Dependency.Libraries.Lib.forEach { compileOnly(it) }
+    Dependency.Libraries.LibCore.forEach { paperLibrary(it) }
 }
 
 kotlin {
@@ -39,35 +38,29 @@ tasks {
         }
     }
 
-    shadowJar {
+    jar {
         archiveBaseName.set("dashify-plugin")
-        from(sourceSets["main"].output)
-        val plugins = File(rootDir, ".server/plugins/")
-
-        doLast {
-            copy {
-                from(archiveFile)
-                if (File(plugins, archiveFileName.get()).exists()) {
-                    File(plugins, archiveFileName.get()).delete()
-                }
-                into(plugins)
-            }
-        }
+        archiveClassifier.set("")
     }
-
-    register<Jar>("buildJar") {
-        archiveBaseName.set("dashify-plugin")
-        from(sourceSets["main"].output)
-        val plugins = File(rootDir, ".server/plugins/")
-
-        doLast {
-            copy {
-                from(archiveFile)
-                if (File(plugins, archiveFileName.get()).exists()) {
-                    File(plugins, archiveFileName.get()).delete()
-                }
-                into(plugins)
-            }
-        }
+    runServer {
+        minecraftVersion(Dependency.Paper.Version)
+        jvmArgs = listOf("-Dcom.mojang.eula.agree=true")
     }
+}
+
+idea {
+    module {
+        excludeDirs.addAll(listOf(file("run"), file(".idea")))
+    }
+}
+
+paper {
+    main = "${project.group}.DashifyPluginMain"
+    loader = "${project.group}.DashifyPluginLoader"
+    authors = listOf("aroxu", "pybsh")
+
+    generateLibrariesJson = true
+    foliaSupported = false
+
+    apiVersion = Dependency.Paper.API
 }
