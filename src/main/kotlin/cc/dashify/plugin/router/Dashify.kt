@@ -21,13 +21,16 @@ import io.ktor.server.routing.*
  */
 fun Application.dashify() {
     fun checkIsEnabled() = ConfigHandler["enabled"].toString().toBoolean()
-
-    install(CORS) {
-        allowMethod(HttpMethod.Get)
-        allowMethod(HttpMethod.Post)
-        allowHeader(HttpHeaders.Authorization)
-        anyHost()
-    }
+//
+//    install(CORS) {
+//        anyHost()
+//        allowMethod(HttpMethod.Options)
+//        allowMethod(HttpMethod.Post)
+//        allowMethod(HttpMethod.Get)
+//        allowHeader(HttpHeaders.AccessControlAllowOrigin)
+//        allowHeader(HttpHeaders.ContentType)
+//        allowHeader(HttpHeaders.Authorization)
+//    }
 
     install(ContentNegotiation) {
         jackson {}
