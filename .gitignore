@@ -42,5 +42,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### .server ###
-.server
+### Server ###
+run

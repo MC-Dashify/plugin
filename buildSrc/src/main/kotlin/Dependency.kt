@@ -28,7 +28,8 @@ object Dependency {
             "io.ktor:ktor-server-cors-jvm:$ktorVersion",
             "io.ktor:ktor-server-netty-jvm:$ktorVersion",
             "io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion",
-            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion"
+            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion",
+            "io.ktor:ktor-server-auth:$ktorVersion"
         )
 
         val LibCore = arrayListOf(
@@ -41,7 +42,8 @@ object Dependency {
             "io.ktor:ktor-server-cors-jvm:$ktorVersion",
             "io.ktor:ktor-server-netty-jvm:$ktorVersion",
             "io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion",
-            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion"
+            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion",
+            "io.ktor:ktor-server-auth-jvm:$ktorVersion"
         )
     }
 }

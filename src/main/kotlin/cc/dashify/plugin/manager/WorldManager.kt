@@ -8,12 +8,7 @@ import org.bukkit.GameRule
 import java.util.*
 
 object WorldManager {
-    fun getWorldsList(): HashMap<String, Any> {
-        val worlds = arrayListOf<HashMap<String, Any>>()
-        plugin.server.worlds.forEach { worlds.add(hashMapOf("uuid" to it.uid, "name" to it.name)) }
-
-        return hashMapOf("worlds" to worlds)
-    }
+    fun getWorldsList(): HashMap<String, List<HashMap<String, out Any>>> = hashMapOf("worlds" to plugin.server.worlds.map { hashMapOf("uuid" to it.uid, "name" to it.name) })
 
     /**
      * getWorldInfo()
@@ -24,10 +19,11 @@ object WorldManager {
     suspend fun getWorldInfo(worldUuid: String): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 
-        try { UUID.fromString(worldUuid) }
-        catch (e: IllegalArgumentException) {
+        try {
+            UUID.fromString(worldUuid)
+        } catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
-            result["error"] = "invalid UUID"
+            result["error"] = "Invalid UUID"
             return result
         }
 
@@ -42,6 +38,7 @@ object WorldManager {
             val world = plugin.server.getWorld(UUID.fromString(worldUuid))!!
 
             var entities: Int
+
             await {
                 entities = world.entities.size
                 result["name"] = world.name

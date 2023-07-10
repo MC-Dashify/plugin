@@ -4,7 +4,6 @@ plugins {
     kotlin("plugin.serialization") version Dependency.Kotlin.Version
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
     id("xyz.jpenilla.run-paper") version "2.1.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "cc.dashify.plugin"
@@ -56,7 +55,7 @@ idea {
 
 paper {
     main = "${project.group}.DashifyPluginMain"
-    loader = "${project.group}.DashifyPluginLoader"
+    loader = "${project.group}.loader.DashifyPluginLoader"
     authors = listOf("aroxu", "pybsh")
 
     generateLibrariesJson = true

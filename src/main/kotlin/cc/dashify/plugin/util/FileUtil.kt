@@ -11,7 +11,6 @@ import kotlin.math.pow
  */
 object FileUtil {
     private fun dirSize(dir: File): Long {
-
         if (dir.exists()) {
             var result: Long = 0
             val fileList = dir.listFiles()
@@ -36,8 +35,8 @@ object FileUtil {
     fun getFolderSize(dir: File): String {
         val size = dirSize(dir)
 
-        if (size <= 0)
-            return "0MB"
+        if (size <= 0) return "0MB"
+
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
         val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(

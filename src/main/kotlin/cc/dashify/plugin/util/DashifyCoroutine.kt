@@ -1,6 +1,6 @@
 package cc.dashify.plugin.util
 
-import cc.dashify.plugin.DashifyPluginMain
+import cc.dashify.plugin.DashifyPluginMain.Companion.plugin
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -10,17 +10,18 @@ import kotlin.coroutines.suspendCoroutine
  * handle coroutine
  */
 object DashifyCoroutine {
+
     /**
      * await()
      * await for runnable
-     * @param runnable Runnable
+     * @param task [Unit]
      */
-    suspend fun await(runnable: Runnable) {
+    suspend fun await(task: () -> Unit) {
         suspendCoroutine { continuation: Continuation<Boolean> ->
-            DashifyPluginMain.plugin.server.scheduler.scheduleSyncDelayedTask(DashifyPluginMain.plugin) {
-                runnable.run()
+            plugin.server.scheduler.runTask(plugin, Runnable {
+                task()
                 continuation.resume(true)
-            }
+            })
         }
     }
 }
