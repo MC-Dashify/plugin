@@ -40,6 +40,7 @@ tasks {
     jar {
         archiveBaseName.set("dashify-plugin")
         archiveClassifier.set("")
+        archiveVersion.set("")
     }
     runServer {
         minecraftVersion(Dependency.Paper.Version)
