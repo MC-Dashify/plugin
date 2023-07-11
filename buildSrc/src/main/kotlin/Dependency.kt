@@ -25,11 +25,9 @@ object Dependency {
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.12.1",
             "org.mindrot:jbcrypt:0.4",
             "io.ktor:ktor-server-core-jvm:$ktorVersion",
-            "io.ktor:ktor-server-cors-jvm:$ktorVersion",
             "io.ktor:ktor-server-netty-jvm:$ktorVersion",
             "io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion",
-            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion",
-            "io.ktor:ktor-server-auth:$ktorVersion"
+            "io.ktor:ktor-serialization-jackson:$ktorVersion"
         )
 
         val LibCore = arrayListOf(
@@ -39,11 +37,9 @@ object Dependency {
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.12.1",
             "org.mindrot:jbcrypt:0.4",
             "io.ktor:ktor-server-core-jvm:$ktorVersion",
-            "io.ktor:ktor-server-cors-jvm:$ktorVersion",
             "io.ktor:ktor-server-netty-jvm:$ktorVersion",
             "io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion",
-            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion",
-            "io.ktor:ktor-server-auth-jvm:$ktorVersion"
+            "io.ktor:ktor-serialization-jackson-jvm:$ktorVersion"
         )
     }
 }

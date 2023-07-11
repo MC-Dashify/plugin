@@ -6,7 +6,6 @@ import cc.dashify.plugin.util.DashifyUtil.validateUUID
 import com.google.gson.Gson
 import io.ktor.http.*
 import net.kyori.adventure.text.Component.text
-import java.util.*
 
 /**
  * PlayerManager
@@ -20,7 +19,7 @@ object PlayerManager {
      */
     fun getPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any>>()
-        plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
+        plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId.toString(), "name" to it.name)) }
 
         return hashMapOf("players" to players)
     }
@@ -83,14 +82,8 @@ object PlayerManager {
 
         runCatching {
             await {
-                if (type == "ban") {
-                    player.banPlayerFull(reason)
-                }
-                if (reason == "") {
-                    player.kick()
-                } else {
-                    player.kick(text(reason))
-                }
+                if (type == "ban") player.banPlayerFull(reason)
+                if (reason.isBlank()) player.kick() else player.kick(text(reason))
                 result["statusCode"] = HttpStatusCode.OK
             }
         }.onFailure {

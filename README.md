@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/master/.github/assets/logo-512.png">
+  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/master/.github/assets/logo-512.png" alt="">
 </p>
 <h1 align="center">Dashify</h1>
 <h3 align="center">Easily and quickly monitor Minecraft servers</h3>
@@ -26,17 +26,17 @@ Dashify plugin is only compatible from PaperMC and it's forks. The recommended s
 ## API Endpoints
 
 -   NOTE: All HTTP requests requires `Authorization` header that looks like: `Bearer your_key_here`.
-  >   Key information can be found in the file `Dashify/config.yml` in the plugins folder.
+  >   Key information can be found in the file `Dashify/config.yml` in the plugins' folder.
 
-| Request Method | Path                   | Requirement   | Response body           | Description                                           |
-|----------------|------------------------|---------------|-------------------------|-------------------------------------------------------|
-| GET            | `/worlds`              | N/A           | N/A                     | Returns a list of all world's UUID and world's name   |
-| GET            | `/worlds/<UUID>`       | World's UUID  | N/A                     | Returns world's info                                  |
-| GET            | `/players`             | N/A           | N/A                     | Returns a list of all player's UUID and player's name |
-| GET            | `/players/<UUID>`      | Player's UUID | N/A                     | Returns player's info                                 |
-| GET            | `/stats`               | N/A           | N/A                     | Returns system's info                                 |
-| POST           | `/players/<UUID>/kick` | Player's UUID | `{"reason":"<string>"}` | Kicks player                                          |
-| POST           | `/players/<UUID>/ban`  | Player's UUID | `{"reason":"<string>"}` | Bans player                                           |
+| Request Method | Path                   | Requirement   | Authorization | Response body           | Description                                           |
+|----------------|------------------------|---------------|---------------|-------------------------|-------------------------------------------------------|
+| GET            | `/worlds`              | N/A           | N/A           | N/A                     | Returns a list of all world's UUID and world's name   |
+| GET            | `/worlds/<UUID>`       | World's UUID  | Required      | N/A                     | Returns world's info                                  |
+| GET            | `/players`             | N/A           | Required      | N/A                     | Returns a list of all player's UUID and player's name |
+| GET            | `/players/<UUID>`      | Player's UUID | Required      | N/A                     | Returns player's info                                 |
+| GET            | `/stats`               | N/A           | Required      | N/A                     | Returns system's info                                 |
+| POST           | `/players/<UUID>/kick` | Player's UUID | Required      | `{"reason":"<string>"}` | Kicks player                                          |
+| POST           | `/players/<UUID>/ban`  | Player's UUID | Required      | `{"reason":"<string>"}` | Bans player                                           |
 
 ## Code of Conduct
 

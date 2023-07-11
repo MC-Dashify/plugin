@@ -7,9 +7,12 @@ import cc.dashify.plugin.DashifyServer.stopKtor
 import cc.dashify.plugin.util.ConfigHandler
 import cc.dashify.plugin.util.DashifyUtil
 import cc.dashify.plugin.util.StringUtil
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import io.github.monun.kommand.kommand
 import org.bukkit.plugin.java.JavaPlugin
 import org.mindrot.jbcrypt.BCrypt
+
 
 /**
  * DashifyPluginMain
@@ -36,15 +39,13 @@ class DashifyPluginMain : JavaPlugin() {
         if (config.getString("key")?.trim().isNullOrBlank()) {
             val key = BCrypt.hashpw(StringUtil.generateRandomString(64), BCrypt.gensalt())
             config.set("key", key)
-            logger.info("Initial Dashify key generated: $key")
-            logger.warning("DO NOT SHARE THIS KEY TO ANYONE ELSE!")
             DashifyUtil.key = key
             saveConfig()
         }
 
         if (enabled) {
             startKtor()
-            logger.info("dashify-plugin Enabled.")
+            logger.info("Dashify is enabled.")
         }
         else {
             logger.warning("Dashify is disabled.")

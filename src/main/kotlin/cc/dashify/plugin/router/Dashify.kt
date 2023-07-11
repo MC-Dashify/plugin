@@ -6,90 +6,98 @@ import cc.dashify.plugin.manager.RuntimeManager
 import cc.dashify.plugin.manager.SystemManager
 import cc.dashify.plugin.manager.WorldManager
 import cc.dashify.plugin.util.DashifyUtil
+import cc.dashify.plugin.util.DashifyUtil.validateKey
+import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
- * dashify()
- * dashify router
+ * Dashify router
  */
+
 fun Application.dashify() {
-    install(Authentication) {
-        bearer("auth-bearer") {
-            authenticate { bearerTokenCredential ->
-                if (bearerTokenCredential.token == DashifyUtil.key) UserIdPrincipal("dashify") else {
-                    respond(
-                        HttpStatusCode.Unauthorized,
-                        hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                    )
-                    null
-                }
-            }
+    install(ContentNegotiation) {
+        jackson {
+            enable(SerializationFeature.INDENT_OUTPUT)
+            setDefaultPrettyPrinter(DashifyUtil.CustomPrettyPrinter)
         }
     }
 
-    install(ContentNegotiation) {
-        // TODO: Change to kotlinx.serialization
-        jackson {}
-    }
-
     routing {
-        authenticate("auth-bearer") {
-            // TODO: REMOVE All !!
-
-            get("/") {
-                call.respond(HttpStatusCode.OK, hashMapOf("status" to "ok"))
+        get("/") {
+            call.respond(HttpStatusCode.OK, hashMapOf("status" to "OK"))
+        }
+        get("/worlds") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@get else call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
+        }
+        get("/world/{uuid}") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@get else {
+                call.parameters["uuid"]?.let { uuid ->
+                    val result = WorldManager.getWorldInfo(uuid)
+                    if (result["error"] == null) {
+                        call.respond(HttpStatusCode.OK, result)
+                    } else {
+                        call.respond(result["statusCode"] as HttpStatusCode, result)
+                    }
+                } ?: call.respond(HttpStatusCode.BadRequest, hashMapOf("error" to "No UUID provoded."))
             }
+        }
 
-            get("/worlds") {
-                call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
-            }
-            get("/world/{uuid}") {
-                val result = WorldManager.getWorldInfo(call.parameters["uuid"]!!)
-                if (result["error"] == null) {
-                    call.respond(HttpStatusCode.OK, result)
-                } else {
-                    call.respond(result["statusCode"] as HttpStatusCode, result)
+        get("/players") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@get else call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
+        }
+
+        get("/player/{uuid}") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@get else {
+                call.parameters["uuid"]?.let { uuid ->
+                    val result = PlayerManager.getPlayerInfo(uuid)
+                    if (result["error"] == null) {
+                        call.respond(HttpStatusCode.OK, result)
+                    } else {
+                        call.respond(result["statusCode"] as HttpStatusCode, result)
+                    }
                 }
             }
-
-            get("/players") {
-                call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
-            }
-
-            get("/player/{uuid}") {
-                val result = PlayerManager.getPlayerInfo(call.parameters["uuid"]!!)
-                if (result["error"] == null) {
-                    call.respond(HttpStatusCode.OK, result)
-                } else {
-                    call.respond(result["statusCode"] as HttpStatusCode, result)
+        }
+        post("/player/{uuid}/kick") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@post else {
+                call.parameters["uuid"]?.let { uuid ->
+                    val result = PlayerManager.managePlayer("kick", uuid, call.receiveText())
+                    if (result["error"] == null) {
+                        call.response.status(HttpStatusCode.OK)
+                    } else {
+                        call.respond(result["statusCode"] as HttpStatusCode, result)
+                    }
                 }
             }
-            post("/player/{uuid}/kick") {
-                val result = PlayerManager.managePlayer("kick", call.parameters["uuid"]!!, call.receiveText())
-                if (result["error"] == null) {
-                    call.response.status(HttpStatusCode.OK)
-                } else {
-                    call.respond(result["statusCode"] as HttpStatusCode, result)
+        }
+        post("/player/{uuid}/ban") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@post else {
+                call.parameters["uuid"]?.let { uuid ->
+                    val result = PlayerManager.managePlayer("ban", uuid, call.receiveText())
+                    if (result["error"] == null) {
+                        call.response.status(HttpStatusCode.OK)
+                    } else {
+                        call.respond(result["statusCode"] as HttpStatusCode, result)
+                    }
                 }
             }
-            post("/player/{uuid}/ban") {
-                val result = PlayerManager.managePlayer("ban", call.parameters["uuid"]!!, call.receiveText())
-                if (result["error"] == null) {
-                    call.response.status(HttpStatusCode.OK)
-                } else {
-                    call.respond(result["statusCode"] as HttpStatusCode, result)
-                }
-            }
+        }
 
-            get("/stats") {
+        get("/stats") {
+            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
+            if (!auth) return@get else {
                 val stats = SystemManager.getSysInfo()
                 stats["jvm"] = RuntimeManager.getMemory()
                 stats["tps"] = plugin.server.tps
