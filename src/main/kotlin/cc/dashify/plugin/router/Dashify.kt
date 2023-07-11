@@ -17,7 +17,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 /**
+ * @author aroxu, pybsh
+ */
+
+/**
  * Dashify router
+ *
+ * This is where all the HTTP routes are defined.
  */
 
 fun Application.dashify() {
@@ -36,7 +42,7 @@ fun Application.dashify() {
             val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
             if (!auth) return@get else call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
         }
-        get("/world/{uuid}") {
+        get("/worlds/{uuid}") {
             val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
             if (!auth) return@get else {
                 call.parameters["uuid"]?.let { uuid ->
@@ -55,7 +61,7 @@ fun Application.dashify() {
             if (!auth) return@get else call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
         }
 
-        get("/player/{uuid}") {
+        get("/players/{uuid}") {
             val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
             if (!auth) return@get else {
                 call.parameters["uuid"]?.let { uuid ->
@@ -68,7 +74,7 @@ fun Application.dashify() {
                 }
             }
         }
-        post("/player/{uuid}/kick") {
+        post("/players/{uuid}/kick") {
             val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
             if (!auth) return@post else {
                 call.parameters["uuid"]?.let { uuid ->
@@ -81,7 +87,7 @@ fun Application.dashify() {
                 }
             }
         }
-        post("/player/{uuid}/ban") {
+        post("/players/{uuid}/ban") {
             val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
             if (!auth) return@post else {
                 call.parameters["uuid"]?.let { uuid ->
