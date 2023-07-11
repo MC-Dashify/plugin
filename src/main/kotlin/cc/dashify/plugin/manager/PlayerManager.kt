@@ -46,7 +46,7 @@ object PlayerManager {
         result["uuid"] = player.uniqueId.toString()
         result["ping"] = player.ping
         result["clientBrandName"] = player.clientBrandName
-        result["avatar"] = "https://crafatar.com/avatars/${player.uniqueId}"
+        result["avatar"] = "https://mc-heads.net/avatar/${player.uniqueId}"
 
         return result
     }
