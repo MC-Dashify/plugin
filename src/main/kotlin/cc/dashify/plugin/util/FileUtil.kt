@@ -6,10 +6,21 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 /**
+ * @author aroxu, pybsh
+ */
+
+/**
  * FileUtil
- * handle file
+ *
+ * File handling functions
  */
 object FileUtil {
+    /**
+     * Check inner file size of a specific directory.
+     *
+     * @param dir [File][The file that you want to check.]
+     * @return [Long] The size of the file.
+     */
     private fun dirSize(dir: File): Long {
         if (dir.exists()) {
             var result: Long = 0
@@ -27,10 +38,10 @@ object FileUtil {
     }
 
     /**
-     * getFolderSize()
-     * get folder size
-     * @param dir File
-     * @return String
+     * Checks specific directory size.
+     *
+     * @param dir [File][The directory that you want to check.]
+     * @return [String] of file size in B/Kb/MB/GB/TB.
      */
     fun getFolderSize(dir: File): String {
         val size = dirSize(dir)

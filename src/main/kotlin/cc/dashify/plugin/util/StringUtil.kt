@@ -4,14 +4,15 @@ import kotlin.random.Random
 
 /**
  * StringUtil
- * @author aroxu
+ *
+ * String handling functions
  */
 object StringUtil {
     /**
-     * generateRandomString()
-     * generate random string
-     * @param length Int
-     * @return String
+     * Generates a random string in a specified length.
+     *
+     * @param length [Int][The length of the string.]
+     * @return [String] The generated string.
      */
     fun generateRandomString(length: Int): String {
         val charPool = mutableListOf<Char>()

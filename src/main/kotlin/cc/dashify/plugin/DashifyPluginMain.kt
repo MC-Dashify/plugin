@@ -1,22 +1,26 @@
 package cc.dashify.plugin
 
-import cc.dashify.plugin.DashifyKommand.registerKommand
 import cc.dashify.plugin.DashifyServer.isServerRunning
 import cc.dashify.plugin.DashifyServer.startKtor
-import cc.dashify.plugin.DashifyServer.stopKtor
 import cc.dashify.plugin.util.ConfigHandler
 import cc.dashify.plugin.util.DashifyUtil
+import cc.dashify.plugin.util.DashifyUtil.enabled
 import cc.dashify.plugin.util.StringUtil
-import com.fasterxml.jackson.core.util.DefaultIndenter
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import io.github.monun.kommand.kommand
+import cloud.commandframework.execution.CommandExecutionCoordinator
+import cloud.commandframework.paper.PaperCommandManager
 import org.bukkit.plugin.java.JavaPlugin
 import org.mindrot.jbcrypt.BCrypt
+import java.util.function.Function
 
 
 /**
- * DashifyPluginMain
- * the main class of the plugin.
+ * @author aroxu, pybsh, lambdynma
+ */
+
+/**
+ * Dashify Plugin Main
+ *
+ * The main class of the plugin.
  */
 class DashifyPluginMain : JavaPlugin() {
     companion object {
@@ -27,14 +31,8 @@ class DashifyPluginMain : JavaPlugin() {
         plugin = this
         ConfigHandler.initConfig()
 
-        val enabled = config.getBoolean("enabled")
-
-        kommand {
-            register("dashify") {
-                requires { isPlayer && isOp }
-                registerKommand(this)
-            }
-        }
+        val manager = PaperCommandManager(this, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity())
+        manager.command(DashifyCommand.registerCommand(manager))
 
         if (config.getString("key")?.trim().isNullOrBlank()) {
             val key = BCrypt.hashpw(StringUtil.generateRandomString(64), BCrypt.gensalt())
@@ -43,16 +41,19 @@ class DashifyPluginMain : JavaPlugin() {
             saveConfig()
         }
 
+        startKtor()
+
         if (enabled) {
-            startKtor()
-            logger.info("Dashify is enabled.")
+            logger.info("Dashify enabled.")
         }
         else {
-            logger.warning("Dashify is disabled.")
+            logger.warning("Dashify disabled.")
         }
     }
 
     override fun onDisable() {
-        if (isServerRunning) stopKtor()
+        if (isServerRunning) {
+            DashifyServer.server.stop(0, 0)
+        }
     }
 }

@@ -1,8 +1,24 @@
+/**
+ * @author lambdynma
+ */
+
+/**
+ * This dependency file is a list of libraries and constants that can be used in build.gradle.kts.
+ *
+ * Structure may be changed by owner's decision.
+ */
+
 object Dependency {
+    /**
+     * Kotlin version object and constants.
+     */
     object Kotlin {
         const val Version = "1.9.0"
     }
 
+    /**
+     * Paper version & api version constants.
+     */
     object Paper {
         const val Version = "1.20.1"
         const val API = "1.19"
@@ -14,12 +30,12 @@ object Dependency {
 
     private const val ktorVersion = "2.3.2"
 
+    /**
+     * List of libraries.
+     */
     object Libraries {
-        private const val monun = "io.github.monun"
-
         val Lib = arrayListOf(
-            "${monun}:tap-api:4.9.6",
-            "${monun}:kommand-api:3.1.5",
+            "cloud.commandframework:cloud-paper:1.8.3",
             "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1",
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.12.1",
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.12.1",
@@ -31,8 +47,8 @@ object Dependency {
         )
 
         val LibCore = arrayListOf(
-            "${monun}:tap-core:4.9.6",
-            "${monun}:kommand-core:3.1.5",
+            "cloud.commandframework:cloud-paper:1.8.3",
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1",
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.12.1",
             "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.12.1",
             "org.mindrot:jbcrypt:0.4",

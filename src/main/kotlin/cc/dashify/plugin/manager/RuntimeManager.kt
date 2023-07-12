@@ -2,13 +2,14 @@ package cc.dashify.plugin.manager
 
 /**
  * RuntimeManager
- * manages the runtime
+ *
+ * Runtime management functions
  */
 object RuntimeManager {
     /**
-     * getMemory()
-     * returns the memory usage of the server
-     * @return HashMap<String, Any>
+     * Retrieves Memory information.
+     *
+     * @return [HashMap] Result of the operation. Type: <String, Any>
      */
     fun getMemory(): HashMap<String, Any> {
         val runtime = Runtime.getRuntime()

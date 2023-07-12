@@ -8,12 +8,14 @@ import java.nio.file.Paths
 
 /**
  * SystemManager
- * manages the system
+ *
+ * System management functions
  */
 object SystemManager {
     /**
-     * getSysInfo()
-     * @return HashMap<String, Any>
+     * Retrieves system information.
+     *
+     * @return [HashMap] Result of the operation. Type: <String, Any>
      */
     fun getSysInfo(): HashMap<String, Any> {
         val systemInfo = HashMap<String, Any>()

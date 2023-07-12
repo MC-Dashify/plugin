@@ -6,6 +6,7 @@ import cc.dashify.plugin.manager.RuntimeManager
 import cc.dashify.plugin.manager.SystemManager
 import cc.dashify.plugin.manager.WorldManager
 import cc.dashify.plugin.util.DashifyUtil
+import cc.dashify.plugin.util.DashifyUtil.enabled
 import cc.dashify.plugin.util.DashifyUtil.validateKey
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.http.*
@@ -36,79 +37,154 @@ fun Application.dashify() {
 
     routing {
         get("/") {
-            call.respond(HttpStatusCode.OK, hashMapOf("status" to "OK"))
+            if (enabled) {
+                call.respond(HttpStatusCode.OK, hashMapOf("status" to "OK"))
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+            }
         }
         get("/worlds") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@get else call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@get
+                } else {
+                    call.respond(HttpStatusCode.OK, WorldManager.getWorldList())
+                }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+            }
         }
         get("/worlds/{uuid}") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@get else {
-                call.parameters["uuid"]?.let { uuid ->
-                    val result = WorldManager.getWorldInfo(uuid)
-                    if (result["error"] == null) {
-                        call.respond(HttpStatusCode.OK, result)
-                    } else {
-                        call.respond(result["statusCode"] as HttpStatusCode, result)
-                    }
-                } ?: call.respond(HttpStatusCode.BadRequest, hashMapOf("error" to "No UUID provoded."))
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@get
+                } else {
+                    call.parameters["uuid"]?.let { uuid ->
+                        val result = WorldManager.getWorldInfo(uuid)
+                        if (result["error"] == null) {
+                            call.respond(HttpStatusCode.OK, result)
+                        } else {
+                            call.respond(result["statusCode"] as HttpStatusCode, result)
+                        }
+                    } ?: call.respond(HttpStatusCode.BadRequest, hashMapOf("error" to "No UUID provoded."))
+                }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
             }
         }
 
         get("/players") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@get else call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@get
+                } else {
+                    call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
+                }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+            }
         }
 
         get("/players/{uuid}") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@get else {
-                call.parameters["uuid"]?.let { uuid ->
-                    val result = PlayerManager.getPlayerInfo(uuid)
-                    if (result["error"] == null) {
-                        call.respond(HttpStatusCode.OK, result)
-                    } else {
-                        call.respond(result["statusCode"] as HttpStatusCode, result)
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@get
+                } else {
+                    call.parameters["uuid"]?.let { uuid ->
+                        val result = PlayerManager.getPlayerInfo(uuid)
+                        if (result["error"] == null) {
+                            call.respond(HttpStatusCode.OK, result)
+                        } else {
+                            call.respond(result["statusCode"] as HttpStatusCode, result)
+                        }
                     }
                 }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
             }
         }
         post("/players/{uuid}/kick") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@post else {
-                call.parameters["uuid"]?.let { uuid ->
-                    val result = PlayerManager.managePlayer("kick", uuid, call.receiveText())
-                    if (result["error"] == null) {
-                        call.response.status(HttpStatusCode.OK)
-                    } else {
-                        call.respond(result["statusCode"] as HttpStatusCode, result)
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@post
+                } else {
+                    call.parameters["uuid"]?.let { uuid ->
+                        val result = PlayerManager.managePlayer("kick", uuid, call.receiveText())
+                        if (result["error"] == null) {
+                            call.response.status(HttpStatusCode.OK)
+                        } else {
+                            call.respond(result["statusCode"] as HttpStatusCode, result)
+                        }
                     }
                 }
             }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+            }
         }
         post("/players/{uuid}/ban") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@post else {
-                call.parameters["uuid"]?.let { uuid ->
-                    val result = PlayerManager.managePlayer("ban", uuid, call.receiveText())
-                    if (result["error"] == null) {
-                        call.response.status(HttpStatusCode.OK)
-                    } else {
-                        call.respond(result["statusCode"] as HttpStatusCode, result)
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@post
+                } else {
+                    call.parameters["uuid"]?.let { uuid ->
+                        val result = PlayerManager.managePlayer("ban", uuid, call.receiveText())
+                        if (result["error"] == null) {
+                            call.response.status(HttpStatusCode.OK)
+                        } else {
+                            call.respond(result["statusCode"] as HttpStatusCode, result)
+                        }
                     }
                 }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
             }
         }
 
         get("/stats") {
-            val auth = validateKey(call.request.headers["Authorization"] ?: "", call)
-            if (!auth) return@get else {
-                val stats = SystemManager.getSysInfo()
-                stats["jvm"] = RuntimeManager.getMemory()
-                stats["tps"] = plugin.server.tps
-                call.respond(HttpStatusCode.OK, stats)
+            val auth = validateKey(call.authKey)
+
+            if (enabled) {
+                if (!auth) {
+                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
+                    return@get
+                } else {
+                    val stats = SystemManager.getSysInfo()
+                    stats["jvm"] = RuntimeManager.getMemory()
+                    stats["tps"] = plugin.server.tps
+                    call.respond(HttpStatusCode.OK, stats)
+                }
+            }
+            else {
+                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
             }
         }
     }
 }
+
+private val ApplicationCall.authKey
+    get() = this.request.headers["Authorization"]

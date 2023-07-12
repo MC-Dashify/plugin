@@ -9,14 +9,14 @@ import java.io.File
 
 /**
  * ConfigHandler
- * handle config file
+ *
+ * Config related functions, constants, variables are defined in here.
  */
 object ConfigHandler {
     private const val CONFIG_VERSION = 1
 
     /**
      * initConfig()
-     * init config file
      */
 
     fun initConfig() {

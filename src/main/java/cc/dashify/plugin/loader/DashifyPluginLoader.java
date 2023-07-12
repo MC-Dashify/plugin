@@ -16,6 +16,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/**
+ * @author lambdynma
+ * <p>
+ * This file is intended to be used by the PaperMC Paper Plugins mechanism.
+ * <p>
+ * Loads the plugin dependencies from a JSON file.
+ * <p>
+ * This file should not be used by any other means.
+ */
+
 @SuppressWarnings({"UnstableApiUsage", "unused"})
 public class DashifyPluginLoader implements PluginLoader {
     @Override
@@ -28,12 +38,19 @@ public class DashifyPluginLoader implements PluginLoader {
     }
 
     public PluginLibraries load() {
+        PluginLibraries libraries = null;
+
         try (var in = getClass().getResourceAsStream("/paper-libraries.json")) {
             assert in != null;
-            return new Gson().fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), PluginLibraries.class);
+
+            InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            libraries = new Gson().fromJson(reader, PluginLibraries.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Failed to load libraries from paper-libraries.json");
+            e.printStackTrace();
         }
+
+        return libraries;
     }
 
     private record PluginLibraries(Map<String, String> repositories, List<String> dependencies) {

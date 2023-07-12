@@ -7,14 +7,28 @@ import cc.dashify.plugin.util.FileUtil.getFolderSize
 import io.ktor.http.*
 import org.bukkit.GameRule
 
+/**
+ * @author aroxu, pybsh
+ */
+
+/**
+ * WorldManager
+ *
+ * World management functions
+ */
 object WorldManager {
-    fun getWorldsList(): HashMap<String, List<HashMap<String, out Any>>> = hashMapOf("worlds" to plugin.server.worlds.map { hashMapOf("uuid" to it.uid.toString(), "name" to it.name) })
+    /**
+     * Get a list of worlds.
+     *
+     * @return [HashMap] Result of the opperation. Type: <String, List<HashMap<String, String>>>
+     */
+    fun getWorldList(): HashMap<String, List<HashMap<String, String>>> = hashMapOf("worlds" to plugin.server.worlds.map { hashMapOf("uuid" to it.uid.toString(), "name" to it.name) })
 
     /**
-     * getWorldInfo()
-     * return world info
+     * Retrieves specific world info.
+     *
      * @param reqWorldUUID String
-     * @return HashMap<String, Any>
+     * @return [HashMap]<String, Any>
      */
     suspend fun getWorldInfo(reqWorldUUID: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()

@@ -8,27 +8,27 @@ import io.ktor.http.*
 import net.kyori.adventure.text.Component.text
 
 /**
+ * @author aroxu, pybsh
+ */
+
+/**
  * PlayerManager
- * manage player
+ *
+ * Player management functions
  */
 object PlayerManager {
     /**
-     * getPlayerList()
-     * return player list
-     * @return [HashMap]<String, Any>
+     * Get a list of players.
+     *
+     * @return [HashMap] Result of the opperation. Type: <String, List<HashMap<String, String>>>
      */
-    fun getPlayerList(): HashMap<String, Any> {
-        val players = arrayListOf<HashMap<String, Any>>()
-        plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId.toString(), "name" to it.name)) }
-
-        return hashMapOf("players" to players)
-    }
+    fun getPlayerList(): HashMap<String, List<HashMap<String, String>>> = hashMapOf("worlds" to plugin.server.onlinePlayers.map { hashMapOf("uuid" to it.uniqueId.toString(), "name" to it.name) })
 
     /**
-     * getPlayerInfo()
-     * return player info
-     * @param playerUUIDString [String]
-     * @return [HashMap]<String, Any?>
+     * Retrieve specific player info.
+     *
+     * @param playerUUIDString [String][Player UUID]
+     * @return [HashMap] Result of the operation. Type: <String, Any?>
      */
     fun getPlayerInfo(playerUUIDString: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
@@ -52,12 +52,12 @@ object PlayerManager {
     }
 
     /**
-     * managePlayer()
-     * kick or ban player
-     * @param type [String]
-     * @param playerUUIDString [String]
-     * @param reasonContext [String] or null
-     * @return [HashMap]<String, Any>
+     * Perform a kick or ban to a specific player
+     *
+     * @param type [String][Check if it's a ban or not.]
+     * @param playerUUIDString [String][Player UUID]
+     * @param reasonContext [String][Reason for kick/ban in String, it can be null.]
+     * @return [HashMap] Result of the operation. Type: <String, Any>
      */
     suspend fun managePlayer(type: String, playerUUIDString: String, reasonContext: String?): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
