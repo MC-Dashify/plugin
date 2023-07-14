@@ -45,6 +45,11 @@ import io.ktor.server.routing.*
  */
 
 fun Application.dashify() {
+    val statusOK = hashMapOf("status" to "OK")
+    val statusDisabled = hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled.")
+    val statusAuthError = hashMapOf("error" to "Invalid API key / No Authorization Header.")
+    val disabledCode = HttpStatusCode.fromValue(418)
+    
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
@@ -55,10 +60,10 @@ fun Application.dashify() {
     routing {
         get("/") {
             if (enabled) {
-                call.respond(HttpStatusCode.OK, hashMapOf("status" to "OK"))
+                call.respond(HttpStatusCode.OK, statusOK)
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
         get("/worlds") {
@@ -66,14 +71,13 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@get
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.respond(HttpStatusCode.OK, WorldManager.getWorldList())
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
         get("/worlds/{uuid}") {
@@ -81,8 +85,7 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@get
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.parameters["uuid"]?.let { uuid ->
                         val result = WorldManager.getWorldInfo(uuid)
@@ -95,7 +98,7 @@ fun Application.dashify() {
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
 
@@ -104,14 +107,13 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@get
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
 
@@ -120,8 +122,7 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@get
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.parameters["uuid"]?.let { uuid ->
                         val result = PlayerManager.getPlayerInfo(uuid)
@@ -134,7 +135,7 @@ fun Application.dashify() {
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
         post("/players/{uuid}/kick") {
@@ -142,8 +143,7 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@post
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.parameters["uuid"]?.let { uuid ->
                         val result = PlayerManager.managePlayer("kick", uuid, call.receiveText())
@@ -156,7 +156,7 @@ fun Application.dashify() {
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
         post("/players/{uuid}/ban") {
@@ -164,8 +164,7 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@post
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     call.parameters["uuid"]?.let { uuid ->
                         val result = PlayerManager.managePlayer("ban", uuid, call.receiveText())
@@ -178,7 +177,7 @@ fun Application.dashify() {
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
 
@@ -187,8 +186,7 @@ fun Application.dashify() {
 
             if (enabled) {
                 if (!auth) {
-                    call.respond(HttpStatusCode.Unauthorized, hashMapOf("error" to "Invalid API key / No Authorization Header."))
-                    return@get
+                    call.respond(HttpStatusCode.Unauthorized, statusAuthError)
                 } else {
                     val stats = SystemManager.getSysInfo()
                     stats["jvm"] = RuntimeManager.getMemory()
@@ -197,7 +195,7 @@ fun Application.dashify() {
                 }
             }
             else {
-                call.respond(HttpStatusCode.fromValue(418), hashMapOf("status" to "I'm a teapot :3", "detail" to "Dashify is disabled."))
+                call.respond(disabledCode, statusDisabled)
             }
         }
     }

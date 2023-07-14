@@ -34,6 +34,8 @@ import net.kyori.adventure.text.Component.text
  * Player management functions
  */
 object PlayerManager {
+    private val notFoundCode = HttpStatusCode.NotFound
+    private const val playerNotFoundMsg = "Player not found"
     /**
      * Get a list of players.
      *
@@ -53,17 +55,18 @@ object PlayerManager {
         val playerUUID = validateUUID(playerUUIDString, result) ?: return result
         val player = plugin.server.getPlayer(playerUUID)
 
-        if (player == null) {
-            result["statusCode"] = HttpStatusCode.NotFound
-            result["error"] = "Player not found"
+        if (player != null) {
+            result["name"] = player.name
+            result["uuid"] = player.uniqueId.toString()
+            result["ping"] = player.ping
+            result["clientBrandName"] = player.clientBrandName
+            result["avatar"] = "https://mc-heads.net/avatar/${player.uniqueId}"
+        }
+        else {
+            result["statusCode"] = notFoundCode
+            result["error"] = playerNotFoundMsg
             return result
         }
-
-        result["name"] = player.name
-        result["uuid"] = player.uniqueId.toString()
-        result["ping"] = player.ping
-        result["clientBrandName"] = player.clientBrandName
-        result["avatar"] = "https://mc-heads.net/avatar/${player.uniqueId}"
 
         return result
     }
@@ -82,30 +85,32 @@ object PlayerManager {
         val playerUUID = validateUUID(playerUUIDString, result) ?: return result
         val player = plugin.server.getPlayer(playerUUID)
 
-        if (player == null) {
-            result["statusCode"] = HttpStatusCode.BadRequest
-            result["error"] = "Player not found"
-            return result
-        }
-
         val reason: String?
-        try {
-            reason = (Gson().fromJson(reasonContext, HashMap::class.java) as HashMap<*, *>)["reason"].toString()
-        } catch (e: Exception) {
-            result["statusCode"] = HttpStatusCode.BadRequest
-            result["error"] = "Invalid JSON"
-            return result
-        }
 
-        runCatching {
-            await {
-                if (type == "ban") player.banPlayerFull(reason)
-                if (reason.isBlank()) player.kick() else player.kick(text(reason))
-                result["statusCode"] = HttpStatusCode.OK
+        if (player != null) {
+            try {
+                reason = (Gson().fromJson(reasonContext, HashMap::class.java) as HashMap<*, *>)["reason"].toString()
+            } catch (e: Exception) {
+                result["statusCode"] = HttpStatusCode.BadRequest
+                result["error"] = "Invalid JSON"
+                return result
             }
-        }.onFailure {
-            result["statusCode"] = HttpStatusCode.InternalServerError
-            result["error"] = it.stackTraceToString()
+
+            runCatching {
+                await {
+                    if (type == "ban") player.banPlayerFull(reason)
+                    if (reason.isBlank()) player.kick() else player.kick(text(reason))
+                    result["statusCode"] = HttpStatusCode.OK
+                }
+            }.onFailure {
+                result["statusCode"] = HttpStatusCode.InternalServerError
+                result["error"] = it.stackTraceToString()
+            }
+        }
+        else {
+            result["statusCode"] = notFoundCode
+            result["error"] = playerNotFoundMsg
+            return result
         }
 
         return result
