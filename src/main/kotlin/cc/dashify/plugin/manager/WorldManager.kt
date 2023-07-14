@@ -61,20 +61,22 @@ object WorldManager {
 
         runCatching {
             worldUUID?.let {
-                val world = plugin.server.getWorld(worldUUID) ?: return@let
+                val world = plugin.server.getWorld(worldUUID)
 
                 await {
-                    result["name"] = world.name
-                    result["loadedChunks"] = world.loadedChunks.size
-                    result["entities"] = world.entities.size
-                    result["player"] = world.players.size
-                    result["gamerule"] = world.gameRules.mapNotNull { ruleName ->
-                        GameRule.getByName(ruleName)?.let { rule ->
-                            Pair(ruleName, world.getGameRuleValue(rule))
-                        }
-                    }.toMap()
-                    result["difficulty"] = world.difficulty.name
-                    result["size"] = getFolderSize(world.worldFolder)
+                    if (world != null) {
+                        result["name"] = world.name
+                        result["loadedChunks"] = world.loadedChunks.size
+                        result["entities"] = world.entities.size
+                        result["player"] = world.players.size
+                        result["gamerule"] = world.gameRules.mapNotNull { ruleName ->
+                            GameRule.getByName(ruleName)?.let { rule ->
+                                Pair(ruleName, world.getGameRuleValue(rule))
+                            }
+                        }.toMap()
+                        result["difficulty"] = world.difficulty.name
+                        result["size"] = getFolderSize(world.worldFolder)
+                    }
                 }
             }
         }.onFailure {

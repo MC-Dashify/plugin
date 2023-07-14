@@ -38,6 +38,9 @@ import org.mindrot.jbcrypt.BCrypt
  * This file contains in-game commands that can be used for Dashify Configuration.
  */
 object DashifyCommand {
+    /**
+     * Registers Dashify command.
+     */
     fun registerCommand(manager: CommandManager<CommandSender>): Command.Builder<CommandSender> {
         val root = manager.commandBuilder("dashify")
 

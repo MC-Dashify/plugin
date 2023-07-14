@@ -49,6 +49,9 @@ object DashifyUtil {
 
     fun validateKey(bearerKey: String?): Boolean = key == bearerKey?.removePrefix("Bearer")?.trim()
 
+    /**
+     * This object is for pretty printing JSON that handles Ktor requests.
+     */
     object CustomPrettyPrinter : DefaultPrettyPrinter() {
         init {
             super._arrayIndenter = DefaultIndenter()

@@ -32,12 +32,6 @@ import kotlin.math.pow
  * File handling functions
  */
 object FileUtil {
-    /**
-     * Check inner file size of a specific directory.
-     *
-     * @param dir [File][The file that you want to check.]
-     * @return [Long] The size of the file.
-     */
     private fun dirSize(dir: File): Long {
         if (dir.exists()) {
             var result: Long = 0
