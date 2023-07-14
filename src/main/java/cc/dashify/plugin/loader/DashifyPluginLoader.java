@@ -55,30 +55,42 @@ public class DashifyPluginLoader implements PluginLoader {
     }
 
     public PluginLibraries load() {
-        PluginLibraries libraries = null;
+        PluginLibraries libs = null;
 
         try (var in = getClass().getResourceAsStream("/paper-libraries.json")) {
             assert in != null;
 
-            InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            libraries = new Gson().fromJson(reader, PluginLibraries.class);
+            InputStreamReader reader
+                    = new InputStreamReader(in, StandardCharsets.UTF_8);
+            libs = new Gson().fromJson(reader, PluginLibraries.class);
         } catch (IOException e) {
-            System.err.println("Failed to load libraries from paper-libraries.json");
+            System.err.println("Failed to load libraries.");
             e.printStackTrace();
         }
 
-        return libraries;
+        return libs;
     }
 
     private record PluginLibraries(Map<String, String> repositories, List<String> dependencies) {
         public Stream<Dependency> asDependencies() {
             return dependencies.stream()
-                    .map(d -> new Dependency(new DefaultArtifact(d), null));
+                    .map(d ->
+                            new Dependency(
+                                    new DefaultArtifact(d),
+                                    null
+                            )
+                    );
         }
 
         public Stream<RemoteRepository> asRepositories() {
             return repositories.entrySet().stream()
-                    .map(e -> new RemoteRepository.Builder(e.getKey(), "default", e.getValue()).build());
+                    .map(e ->
+                            new RemoteRepository.Builder(
+                                    e.getKey(),
+                                    "default",
+                                    e.getValue())
+                                    .build()
+                    );
         }
     }
 }
