@@ -55,6 +55,7 @@ object WorldManager {
                 }.toMap()
                 result["difficulty"] = world.difficulty.name
                 result["size"] = getFolderSize(world.worldFolder)
+                result["uuid"] = world.uid
             }
         }.onFailure {
             result["statusCode"] = HttpStatusCode.InternalServerError
