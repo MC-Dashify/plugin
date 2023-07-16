@@ -10,7 +10,6 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -36,62 +35,45 @@ fun Application.dashify() {
         jackson {}
     }
 
-    routing {
-        get("/") {
-            if (!checkIsEnabled()) return@get call.respond(
+    suspend fun checkError(call: ApplicationCall): Boolean {
+        if (!checkIsEnabled()) {
+            call.respond(
                 HttpStatusCode.fromValue(418),
                 hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
             )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
+            return true
+        }
+        val authHeader = call.request.headers["Authorization"]
+        if (authHeader == null) {
+            call.respond(
                 HttpStatusCode.Unauthorized,
                 hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
             )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            return true
+        }
+        if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
+             call.respond(
+                HttpStatusCode.Unauthorized,
+                hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
+            )
+            return true
+        }
 
+        return false
+    }
+
+    routing {
+        get("/") {
+            if(checkError(call)) { return@get }
             call.respond(HttpStatusCode.OK, hashMapOf("status" to "ok"))
         }
 
         get("/worlds") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
-
+            if(checkError(call)) { return@get }
             call.respond(HttpStatusCode.OK, WorldManager.getWorldsList())
         }
         get("/worlds/{uuid}") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            if(checkError(call)) { return@get }
 
             val result = WorldManager.getWorldInfo(call.parameters["uuid"]!!)
             if (result["error"] == null) {
@@ -102,40 +84,11 @@ fun Application.dashify() {
         }
 
         get("/players") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
-
+            if(checkError(call)) { return@get }
             call.respond(HttpStatusCode.OK, PlayerManager.getPlayerList())
         }
         get("/players/{uuid}") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            if(checkError(call)) { return@get }
 
             val result = PlayerManager.getPlayerInfo(call.parameters["uuid"]!!)
             if (result["error"] == null) {
@@ -145,21 +98,7 @@ fun Application.dashify() {
             }
         }
         post("/players/{uuid}/kick") {
-            if (!checkIsEnabled()) return@post call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@post call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@post call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            if(checkError(call)) { return@post }
 
             val result = PlayerManager.managePlayer("kick", call.parameters["uuid"]!!, call.receiveText())
             if (result["error"] == null) {
@@ -169,21 +108,7 @@ fun Application.dashify() {
             }
         }
         post("/players/{uuid}/ban") {
-            if (!checkIsEnabled()) return@post call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@post call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@post call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            if(checkError(call)) { return@post }
 
             val result = PlayerManager.managePlayer("ban", call.parameters["uuid"]!!, call.receiveText())
             if (result["error"] == null) {
@@ -193,21 +118,7 @@ fun Application.dashify() {
             }
         }
         get("/stats") {
-            if (!checkIsEnabled()) return@get call.respond(
-                HttpStatusCode.fromValue(418),
-                hashMapOf("status" to "I'm a tea pot :3", "detail" to "server disabled plugin.")
-            )
-            val authHeader = call.request.headers["Authorization"]
-            authHeader ?: return@get call.respond(
-                HttpStatusCode.Unauthorized,
-                hashMapOf("status" to "Unauthorized", "detail" to "Authorization header not found.")
-            )
-            if (authHeader != "Bearer ${ConfigHandler["key"].toString()}") {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    hashMapOf("status" to "Unauthorized", "detail" to "Invalid key.")
-                )
-            }
+            if(checkError(call)) { return@get }
 
             val stats = SystemManager.getSysInfo()
             stats["jvm"] = RuntimeManager.getMemory()

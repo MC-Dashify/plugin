@@ -11,7 +11,6 @@ object WorldManager {
     fun getWorldsList(): HashMap<String, Any> {
         val worlds = arrayListOf<HashMap<String, Any>>()
         plugin.server.worlds.forEach { worlds.add(hashMapOf("uuid" to it.uid, "name" to it.name)) }
-
         return hashMapOf("worlds" to worlds)
     }
 

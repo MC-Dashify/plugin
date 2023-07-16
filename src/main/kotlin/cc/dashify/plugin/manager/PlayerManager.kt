@@ -21,7 +21,6 @@ object PlayerManager {
     fun getPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any>>()
         plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
-
         return hashMapOf("players" to players)
     }
 
@@ -34,9 +33,8 @@ object PlayerManager {
     fun getPlayerInfo(playerUuid: String): HashMap<String, Any?> {
         val result = HashMap<String, Any?>()
 
-        try {
-            UUID.fromString(playerUuid)
-        } catch (e: IllegalArgumentException) {
+        try { UUID.fromString(playerUuid) }
+        catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
             return result
@@ -69,9 +67,8 @@ object PlayerManager {
     suspend fun managePlayer(type: String, playerUid: String, reasonContext: String?): HashMap<String, Any> {
         val result = HashMap<String, Any>()
 
-        try {
-            UUID.fromString(playerUid)
-        } catch (e: IllegalArgumentException) {
+        try { UUID.fromString(playerUid) }
+        catch (e: IllegalArgumentException) {
             result["statusCode"] = HttpStatusCode.BadRequest
             result["error"] = "invalid UUID"
             return result
