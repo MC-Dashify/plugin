@@ -24,6 +24,7 @@ class DashifyPluginMain : JavaPlugin() {
         if (ConfigHandler["key"].toString().trim() == "") {
             val key = BCrypt.hashpw(StringUtil.generateRandomString(64), BCrypt.gensalt())
             ConfigHandler["key"] = key
+            ConfigHandler["enabled"] = true
         }
 
         startKtor()
