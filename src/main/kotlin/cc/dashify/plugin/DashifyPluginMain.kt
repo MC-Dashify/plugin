@@ -26,10 +26,6 @@ class DashifyPluginMain : JavaPlugin() {
             ConfigHandler["key"] = key
         }
 
-        if (ConfigHandler["enabled"].toString() == "") {
-            ConfigHandler["enabled"] = true
-        }
-
         startKtor()
         logger.info("dashify-plugin Enabled.")
     }
