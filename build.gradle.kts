@@ -15,6 +15,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly(kotlin("stdlib-jdk8:1.8.21"))
     compileOnly("org.mindrot:jbcrypt:0.4")
+    compileOnly("io.sentry:sentry:6.25.2")
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
