@@ -44,12 +44,6 @@ class DashifyPluginMain : JavaPlugin() {
 
         startKtor()
         logger.info("dashify-plugin Enabled.")
-
-        try {
-            throw Exception("This is a test.")
-        } catch (e: Exception) {
-            Sentry.captureException(e)
-        }
     }
 
     override fun onDisable() {
