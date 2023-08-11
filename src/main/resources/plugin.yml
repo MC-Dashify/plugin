@@ -5,11 +5,8 @@ api-version: '1.19'
 
 authors: [ pybsh , aroxu ]
 
-commands:
-  dashify:
-    usage: /dashify [ key | enable | disable ]
-
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
   - org.mindrot:jbcrypt:0.4
   - io.sentry:sentry:6.25.2
+  - cloud.commandframework:cloud-paper:1.8.3

@@ -16,6 +16,7 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8:1.8.21"))
     compileOnly("org.mindrot:jbcrypt:0.4")
     compileOnly("io.sentry:sentry:6.25.2")
+    compileOnly("cloud.commandframework:cloud-paper:1.8.3")
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
