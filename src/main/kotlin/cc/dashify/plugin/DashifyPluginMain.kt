@@ -1,5 +1,6 @@
 package cc.dashify.plugin
 
+import cc.dashify.plugin.constant.SentryDSN
 import cc.dashify.plugin.util.ConfigHandler
 import cc.dashify.plugin.util.StringUtil
 import cloud.commandframework.execution.CommandExecutionCoordinator
@@ -22,7 +23,7 @@ class DashifyPluginMain : JavaPlugin() {
         plugin = this
 
         Sentry.init { options ->
-            options.dsn = "https://77d0f9b5a715c78118e3cff7a4217dc1@o4505685304934400.ingest.sentry.io/4505685420670976"
+            options.dsn = SentryDSN
             options.tracesSampleRate = 1.0
         }
 
@@ -43,6 +44,12 @@ class DashifyPluginMain : JavaPlugin() {
 
         startKtor()
         logger.info("dashify-plugin Enabled.")
+
+        try {
+            throw Exception("This is a test.")
+        } catch (e: Exception) {
+            Sentry.captureException(e)
+        }
     }
 
     override fun onDisable() {

@@ -43,3 +43,7 @@ bin/
 
 ### .server ###
 .server
+
+
+### Sentry ###
+src/main/kotlin/cc/dashify/plugin/constant/SentryDSN.kt

@@ -1,0 +1,3 @@
+package cc.dashify.plugin.constant
+
+//const val SentryDSN = ""
