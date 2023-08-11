@@ -76,6 +76,10 @@ fun Application.dashify() {
             val (status, result) = DataManager.getPlayerInfo(call.parameters["uuid"]!!)
             call.respond(status as HttpStatusCode, result)
         }
+        get("/players/bans") {
+            if(isAuthorized(call)) { return@get }
+            call.respond(HttpStatusCode.OK, DataManager.getBannedPlayerList())
+        }
         post("/players/{uuid}/kick") {
             if(isAuthorized(call)) { return@post }
 
@@ -88,6 +92,7 @@ fun Application.dashify() {
             val (status, result) = PlayerManager.managePlayer("ban", call.parameters["uuid"]!!, call.receiveText())
             call.respond(status as HttpStatusCode, result)
         }
+
         get("/stats") {
             if(isAuthorized(call)) { return@get }
 

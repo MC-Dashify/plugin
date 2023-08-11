@@ -26,6 +26,12 @@ object DataManager {
         return hashMapOf("players" to players)
     }
 
+    fun getBannedPlayerList(): HashMap<String, Any> {
+        val players = arrayListOf<HashMap<String, Any?>>()
+        DashifyPluginMain.plugin.server.bannedPlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
+        return hashMapOf("players" to players)
+    }
+
     fun getMemory(): HashMap<String, Any> {
         return hashMapOf(
             "maxMemory" to "${Runtime.getRuntime().maxMemory() / (1024 * 1024)} MB",
