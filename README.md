@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/master/.github/assets/logo-512.png">
+  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/main/.github/assets/logo-512.png">
 </p>
 <h1 align="center">Dashify</h1>
 <h3 align="center">Easily and quickly monitor Minecraft servers</h3>
@@ -14,7 +14,7 @@
   <a href="https://app.codacy.com/gh/MC-Dashify/plugin/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/f0e17e2ea7184420b0e8998e0cafd27d" alt="code quality"/></a>
 </p>
 
-<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/README.ko_KR.md">한국어</a></p>
+<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/main/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/main/.github/documents/README.ko_KR.md">한국어</a></p>
 
 <h1 align="center">THIS IS PLUGIN REPOSITORY FOR DASHIFY.</h1>
 

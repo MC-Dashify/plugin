@@ -1,6 +1,6 @@
 # Contributing
 
-<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/CONTRIBUTING.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/CONTRIBUTING.ko_KR.md">한국어</a></p>
+<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/main/CONTRIBUTING.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/main/.github/documents/CONTRIBUTING.ko_KR.md">한국어</a></p>
 
 ## Contribution Guidelines
 

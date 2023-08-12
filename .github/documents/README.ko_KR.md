@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/master/.github/assets/logo-512.png">
+  <img width="128" align="center" src="https://github.com/MC-Dashify/plugin/blob/main/.github/assets/logo-512.png">
 </p>
 <h1 align="center">Dashify</h1>
 <h3 align="center">Minecraft 서버 모니터링을 쉽고 빠르게</h3>
@@ -10,7 +10,7 @@
   </a>
 </p>
 
-<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/master/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/master/.github/documents/README.ko_KR.md">한국어</a></p>
+<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/main/README.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/main/.github/documents/README.ko_KR.md">한국어</a></p>
 
 <h1 align="center">이 레포지토리는 Dashify의 plugin 레포지토리 입니다.</h1>
 
