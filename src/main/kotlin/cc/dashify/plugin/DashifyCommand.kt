@@ -12,7 +12,17 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.mindrot.jbcrypt.BCrypt
 
+/**
+ * DashifyCommand
+ * /dashify command
+ */
 object DashifyCommand {
+    /**
+     * registerCommand()
+     * registers the /dashify command
+     * @param manager PaperCommandManager<CommandSender>
+     * @return Command.Builder<CommandSender>
+     */
     fun registerCommand(manager: PaperCommandManager<CommandSender>): Command.Builder<CommandSender> {
         val builder = manager.commandBuilder("dashify")
 

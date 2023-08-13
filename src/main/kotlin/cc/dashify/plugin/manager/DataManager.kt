@@ -13,25 +13,49 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 
+/**
+ * DataManager
+ * manages data
+ */
 object DataManager {
+    /**
+     * getServerInfo()
+     * returns world list
+     * @return HashMap<String, Any>
+     */
     fun getWorldsList(): HashMap<String, Any> {
         val worlds = arrayListOf<HashMap<String, Any>>()
         DashifyPluginMain.plugin.server.worlds.forEach { worlds.add(hashMapOf("uuid" to it.uid, "name" to it.name)) }
         return hashMapOf("worlds" to worlds)
     }
 
+    /**
+     * getPlayerList()
+     * returns player list
+     * @return HashMap<String, Any>
+     */
     fun getPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any>>()
         DashifyPluginMain.plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
         return hashMapOf("players" to players)
     }
 
+    /**
+     * getBannedPlayerList()
+     * returns banned player list
+     * @return HashMap<String, Any>
+     */
     fun getBannedPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any?>>()
         DashifyPluginMain.plugin.server.bannedPlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
         return hashMapOf("players" to players)
     }
 
+    /**
+     * getBannedIPList()
+     * returns system memory info
+     * @return HashMap<String, Any>
+     */
     fun getMemory(): HashMap<String, Any> {
         return hashMapOf(
             "maxMemory" to "${Runtime.getRuntime().maxMemory() / (1024 * 1024)} MB",
@@ -41,6 +65,11 @@ object DataManager {
         )
     }
 
+    /**
+     * getSysInfo()
+     * returns system info
+     * @return HashMap<String, Any>
+     */
     fun getSysInfo(): HashMap<String, Any> {
         val systemInfo = HashMap<String, Any>()
         val osBean: OperatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean() as OperatingSystemMXBean
@@ -60,6 +89,12 @@ object DataManager {
         return systemInfo
     }
 
+    /**
+     * getWorldInfo()
+     * returns world info
+     * @param worldUuid String
+     * @return Pair<Any, HashMap<String, Any>>
+     */
     suspend fun getWorldInfo(worldUuid: String): Pair<Any, HashMap<String, Any>> {
         val map = HashMap<String, Any>()
 
@@ -102,6 +137,12 @@ object DataManager {
         }
     }
 
+    /**
+     * getPlayerInfo()
+     * returns player info
+     * @param playerUuid String
+     * @return Pair<Any, HashMap<String, Any?>>
+     */
     fun getPlayerInfo(playerUuid: String): Pair<Any, HashMap<String, Any?>> {
         val result = HashMap<String, Any?>()
 

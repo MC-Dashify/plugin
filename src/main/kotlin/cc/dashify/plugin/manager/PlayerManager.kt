@@ -14,6 +14,14 @@ import java.util.*
  */
 object PlayerManager {
 
+    /**
+     * managePlayer()
+     * kick or ban player
+     * @param type String
+     * @param playerUid String
+     * @param reasonContext String?
+     * @return Pair<Any, HashMap<String, Any>>
+     */
     suspend fun managePlayer(type: String, playerUid: String, reasonContext: String?): Pair<Any, HashMap<String, Any>> {
         val map = HashMap<String, Any>()
 
