@@ -21,6 +21,7 @@ on:
     - cron: '21 20 * * 6'
 
 jobs:
+  presetup:
   analyze:
     name: Analyze
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
@@ -42,6 +43,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - run: mv src/main/kotlin/cc/dashify/plugin/constant/SentryDSN.kt.example src/main/kotlin/cc/dashify/plugin/constant/SentryDSN.kt && echo "const val SentryDSN = \"$SENTRY_DSN"\" >> src/main/kotlin/cc/dashify/plugin/constant/SentryDSN.kt
+      env:
+        SENTRY_DSN: ${{secrets.SENTRY_DSN}}
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
