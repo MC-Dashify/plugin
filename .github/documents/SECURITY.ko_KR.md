@@ -11,4 +11,4 @@
 
 ## 취약점 신고
 
-만약 Dashify 플러그인에서 보안 취약점을 발견하셨다면, [GitHub Issues](https://github.com/MC-Dashify/plugin/issues/new)에서 새 Issue를 작성해 주십시오.
+만약 Dashify 플러그인에서 보안 취약점을 발견하셨다면, [GitHub Security Advisory](https://github.com/MC-Dashify/plugin/security/advisories/new)에서 새 Advisory를 작성해 주십시오.

@@ -11,4 +11,4 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Dashify plugin, please post a new issue on [GitHub Issues](https://github.com/MC-Dashify/plugin/issues/new).
+If you discover a security vulnerability within Dashify plugin, please post a new issue on [GitHub Security Advisory](https://github.com/MC-Dashify/plugin/security/advisories/new).
