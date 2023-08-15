@@ -1,6 +1,6 @@
 # Security Policy
 
-<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/main/SECURITY.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/main/.github/documents/SECUTIRY.ko_KR.md">한국어</a></p>
+<p align="center"><a href="https://github.com/MC-Dashify/plugin/blob/main/SECURITY.md">English</a> · <a href="https://github.com/MC-Dashify/plugin/blob/main/.github/documents/SECURITY.ko_KR.md">한국어</a></p>
 
 ## 지원 버전
 
