@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import io.ktor.http.*
 import io.sentry.Sentry
 import net.kyori.adventure.text.Component.text
+import org.bukkit.BanList
 import java.util.*
 
 /**
@@ -32,6 +33,14 @@ object PlayerManager {
                     this["error"] = "invalid UUID"
                 }
             )
+
+        if (type == "pardon") {
+            val banlist = plugin.server.getBanList(BanList.Type.NAME)
+            if(!banlist.isBanned(uuid.toString()))
+                return Pair(HttpStatusCode.BadRequest, map.apply { this["error"] = "Player not banned" })
+            banlist.pardon(uuid.toString())
+            return Pair(HttpStatusCode.OK, map.apply { this["statusCode"] = HttpStatusCode.OK })
+        }
 
         val player = plugin.server.getPlayer(uuid)
             ?: return Pair(

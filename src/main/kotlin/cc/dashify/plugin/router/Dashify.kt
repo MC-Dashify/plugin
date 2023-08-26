@@ -92,6 +92,12 @@ fun Application.dashify() {
             val (status, result) = PlayerManager.managePlayer("ban", call.parameters["uuid"]!!, call.receiveText())
             call.respond(status as HttpStatusCode, result)
         }
+        post("/players/{uuid}/pardon"){
+            if(isAuthorized(call)) { return@post }
+
+            val (status, result) = PlayerManager.managePlayer("pardon", call.parameters["uuid"]!!, call.receiveText())
+            call.respond(status as HttpStatusCode, result)
+        }
 
         get("/stats") {
             if(isAuthorized(call)) { return@get }
