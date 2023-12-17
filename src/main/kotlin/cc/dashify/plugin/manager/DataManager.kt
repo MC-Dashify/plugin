@@ -8,16 +8,75 @@ import io.ktor.http.*
 import io.sentry.Sentry
 import org.bukkit.GameRule
 import java.lang.management.ManagementFactory
+import java.lang.reflect.Modifier
 import java.nio.file.FileStore
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
+
 
 /**
  * DataManager
  * manages data
  */
 object DataManager {
+    private val getterFieldPrefixes = listOf("get", "has", "is")
+    private val primitiveClasses = listOf(
+        java.lang.Boolean::class.java,
+        java.lang.Byte::class.java,
+        java.lang.Short::class.java,
+        java.lang.Integer::class.java,
+        java.lang.Long::class.java,
+        java.lang.Float::class.java,
+        java.lang.Double::class.java,
+        java.lang.String::class.java
+    )
+
+    private fun getFieldValues(obj: Any, stack: Int = 0): Map<String, Any> {
+        val map = HashMap<String, Any>()
+        for (method in obj.javaClass.declaredMethods) try {
+            if (method.canAccess(obj) && method.parameterCount == 0 && getterFieldPrefixes.any {
+                    method.name.startsWith(
+                        it
+                    )
+                } && Modifier.isPublic(method.modifiers)) {
+                val methodName = method.name.removePrefix("get").replaceFirstChar {
+                    if (method.name.startsWith("get") && method.name.getOrNull(4)
+                            ?.isUpperCase() != true
+                    ) it.lowercaseChar() else it
+                }
+                val methodValue = method.invoke(obj)
+                val javaClass = methodValue?.javaClass ?: continue
+                if (javaClass == obj.javaClass || methodName == "hashCode") continue
+                map[methodName] = when {
+                    javaClass.isEnum -> methodValue.toString()
+                    javaClass.isPrimitive || javaClass in primitiveClasses -> methodValue
+                    methodValue is Collection<*> -> methodValue.mapNotNull { value ->
+                        value?.let { notNull ->
+                            getFieldValues(
+                                notNull
+                            )
+                        }
+                    }
+
+                    methodValue is Map<*, *> -> methodValue.mapValues { (_, value) ->
+                        value?.let { notNull ->
+                            getFieldValues(
+                                notNull
+                            )
+                        }
+                    }
+
+                    else -> if (stack > 0) continue else getFieldValues(methodValue, stack + 1)
+                }
+            }
+
+        } catch (exception: Exception) {
+//            println(exception)
+        }
+        return map
+    }
+
     /**
      * getServerInfo()
      * returns world list
@@ -36,7 +95,13 @@ object DataManager {
      */
     fun getPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any>>()
-        DashifyPluginMain.plugin.server.onlinePlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
+        DashifyPluginMain.plugin.server.onlinePlayers.forEach {
+            players.add(
+                hashMapOf(
+                    "uuid" to it.uniqueId, "name" to it.name
+                )
+            )
+        }
         return hashMapOf("players" to players)
     }
 
@@ -47,7 +112,13 @@ object DataManager {
      */
     fun getBannedPlayerList(): HashMap<String, Any> {
         val players = arrayListOf<HashMap<String, Any?>>()
-        DashifyPluginMain.plugin.server.bannedPlayers.forEach { players.add(hashMapOf("uuid" to it.uniqueId, "name" to it.name)) }
+        DashifyPluginMain.plugin.server.bannedPlayers.forEach {
+            players.add(
+                hashMapOf(
+                    "uuid" to it.uniqueId, "name" to it.name
+                )
+            )
+        }
         return hashMapOf("players" to players)
     }
 
@@ -61,7 +132,9 @@ object DataManager {
             "maxMemory" to "${Runtime.getRuntime().maxMemory() / (1024 * 1024)} MB",
             "totalMemory" to "${Runtime.getRuntime().totalMemory() / (1024 * 1024)} MB",
             "freeMemory" to "${Runtime.getRuntime().freeMemory() / (1024 * 1024)} MB",
-            "usedMemory" to "${(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024)} MB"
+            "usedMemory" to "${
+                (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024)
+            } MB"
         )
     }
 
@@ -98,21 +171,14 @@ object DataManager {
     suspend fun getWorldInfo(worldUuid: String): Pair<Any, HashMap<String, Any>> {
         val map = HashMap<String, Any>()
 
-        val uuid = runCatching { UUID.fromString(worldUuid) }.getOrNull()
-            ?: return Pair(
-                HttpStatusCode.BadRequest,
-                map.apply {
-                    this["error"] = "invalid UUID"
-                }
-            )
+        val uuid =
+            runCatching { UUID.fromString(worldUuid) }.getOrNull() ?: return Pair(HttpStatusCode.BadRequest, map.apply {
+                this["error"] = "invalid UUID"
+            })
 
-        val world = DashifyPluginMain.plugin.server.getWorld(uuid)
-            ?: return Pair(
-                HttpStatusCode.BadRequest,
-                map.apply {
-                    this["error"] = "World not found"
-                }
-            )
+        val world = DashifyPluginMain.plugin.server.getWorld(uuid) ?: return Pair(HttpStatusCode.BadRequest, map.apply {
+            this["error"] = "World not found"
+        })
 
         return runCatching {
             DashifyCoroutine.await {
@@ -128,7 +194,9 @@ object DataManager {
                 map["difficulty"] = world.difficulty.name
                 map["size"] = FileUtil.getFolderSize(world.worldFolder)
                 map["uuid"] = world.uid
+                map["raw"] = getFieldValues(world)
             }
+
             Pair(HttpStatusCode.OK, map)
         }.getOrElse {
             map["error"] = it.stackTraceToString()
@@ -146,17 +214,15 @@ object DataManager {
     fun getPlayerInfo(playerUuid: String): Pair<Any, HashMap<String, Any?>> {
         val result = HashMap<String, Any?>()
 
-        val uuid = runCatching { UUID.fromString(playerUuid) }.getOrNull()
-            ?: return Pair(
-                HttpStatusCode.BadRequest,
-                result.apply {
-                    this["statusCode"] = HttpStatusCode.BadRequest
-                    this["error"] = "invalid UUID"
-                }
-            )
+        val uuid = runCatching { UUID.fromString(playerUuid) }.getOrNull() ?: return Pair(
+            HttpStatusCode.BadRequest,
+            result.apply {
+                this["statusCode"] = HttpStatusCode.BadRequest
+                this["error"] = "invalid UUID"
+            })
 
-        val player = DashifyPluginMain.plugin.server.getPlayer(uuid)
-            ?: return Pair(HttpStatusCode.BadRequest, result.apply {
+        val player =
+            DashifyPluginMain.plugin.server.getPlayer(uuid) ?: return Pair(HttpStatusCode.BadRequest, result.apply {
                 this["statusCode"] = HttpStatusCode.NotFound
                 this["error"] = "Player not found"
             })
@@ -166,6 +232,8 @@ object DataManager {
         result["ping"] = player.ping
         result["clientBrandName"] = player.clientBrandName
         result["avatar"] = "https://mc-heads.net/avatar/${player.uniqueId}"
+        result["raw"] = getFieldValues(player)
+
         return Pair(HttpStatusCode.OK, result)
     }
 }

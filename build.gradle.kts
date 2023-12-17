@@ -5,6 +5,8 @@ plugins {
 }
 
 group = "cc.dashify.plugin"
+version = "1.0.1"
+
 val ktorVersion = "2.3.1"
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
