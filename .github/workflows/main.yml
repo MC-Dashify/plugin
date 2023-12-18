@@ -27,7 +27,7 @@ jobs:
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}
 
       - name: Build with Gradle
-        run: ./gradlew clean shadowJar
+        run: ./gradlew clean shadowJar && apt-get install -y tree && tree .
 
       - name: Set Version
         run: echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c -6)"
