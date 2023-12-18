@@ -5,7 +5,7 @@ on:
     paths:
       - "build.gradle.kts"
       - "src/main/kotlin/resources/plugin.yml"
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
