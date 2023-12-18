@@ -27,7 +27,7 @@ jobs:
           SENTRY_DSN: ${{secrets.SENTRY_DSN}}
 
       - name: Build with Gradle
-        run: ./gradlew clean shadowJar && cp build/libs/dashify-plugin-all.jar .
+        run: ./gradlew clean shadowJar
 
       - name: Set Version
         run: echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c -6)"
@@ -53,6 +53,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dashify-plugin-all.jar
+          asset_path: build/libs/dashify-plugin-all.jar
           asset_name: dashify-plugin-all.jar
           asset_content_type: application/java-archive
